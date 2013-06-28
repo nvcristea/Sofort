@@ -1,4 +1,7 @@
 <?php
+
+namespace Sofort;
+
 /**
  * This class is  for retrieving information about transactions,
  * you can search by transaction-id or by date

@@ -1,5 +1,8 @@
 <?php
-require_once('array_to_xml_exception.php');
+
+namespace Sofort\Helper;
+
+use Sofort\Helper\ArrayToXmlException;
 
 /**
  * @author SOFORT AG (integration@sofort.com)

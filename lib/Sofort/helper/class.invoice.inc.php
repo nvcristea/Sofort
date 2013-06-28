@@ -1,4 +1,7 @@
 <?php
+
+namespace Sofort\Helper;
+
 /**
  * Copyright (c) 2012 SOFORT AG
  *

@@ -1,4 +1,10 @@
 <?php
+
+namespace Sofort\Helper;
+
+use Sofort\Helper\XmlToArrayException;
+use Sofort\Helper\XmlToArrayNode;
+
 /**
  * @author SOFORT AG (integration@sofort.com)
  * @link http://www.sofort.com/
@@ -8,9 +14,6 @@
  * Released under the GNU General Public License (Version 2)
  * [http://www.gnu.org/licenses/gpl-2.0.html]
  */
- 
-require_once('xml_to_array_exception.php');
-require_once('xml_to_array_node.php');
 
 /**
  *

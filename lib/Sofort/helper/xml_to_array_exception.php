@@ -1,4 +1,7 @@
 <?php
+
+namespace Sofort\Helper;
+
 /**
  * 
  * XML to Array Exception

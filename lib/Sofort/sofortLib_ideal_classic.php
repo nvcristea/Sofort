@@ -1,11 +1,14 @@
 <?php
 
+namespace Sofort;
+
 define('VERSION_CLASSIC','1.2.0');
 
-require_once 'sofortLib_http.inc.php';
-require_once 'sofortLib_sofortueberweisung_classic.php';
-require_once 'sofortLib_Logger.inc.php';
-require_once 'sofortLib_ideal_banks.inc.php';
+use Sofort\SofortLib_Http;
+use Sofort\SofortLib_SofortueberweisungClassic;
+use Sofort\SofortLibLogger;
+use Sofort\SofortLib_iDeal_Banks;
+
 /**
  * iDeal_Classic extends Sofortueberweisung_Classic, implementing payment via iDeal
  * Setup a session within iDeal using the classic api

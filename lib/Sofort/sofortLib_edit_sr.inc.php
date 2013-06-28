@@ -1,4 +1,7 @@
 <?php
+
+namespace Sofort;
+
 /**
  * This class is for confirming and changing statuses of invoices
  *

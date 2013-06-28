@@ -1,4 +1,7 @@
 <?php
+
+namespace Sofort;
+
 /// \cond
 /**
  * A basic implementation of logging mechanism intended for debugging

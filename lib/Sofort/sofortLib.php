@@ -1,4 +1,30 @@
 <?php
+
+namespace Sofort;
+
+use Sofort\SofortLib_Abstract;
+use Sofort\SofortLib_ConfirmSr;
+use Sofort\SofortLib_EditSr;
+use Sofort\SofortLib_CancelSr;
+use Sofort\SofortLib_iDeal_Banks;
+use Sofort\SofortLib_Debit;
+use Sofort\SofortLib_Http;
+use Sofort\SofortLib_Multipay;
+use Sofort\SofortLib_Notification;
+use Sofort\SofortLib_Refund;
+use Sofort\SofortLib_TransactionData;
+use Sofort\SofortLibLogger;
+
+/** Include any available helper here **/
+use Sofort\Helper\PnagAbstractDocument;
+use Sofort\Helper\PnagInvoice;
+use Sofort\Helper\Elements\SofortElement;
+use Sofort\Helper\Elements\SofortTag;
+use Sofort\Helper\Elements\SofortHtmlTag;
+use Sofort\Helper\Elements\SofortText;
+use Sofort\Helper\ArrayToXml;
+use Sofort\Helper\XmlToArray;
+
 /**
  * @mainpage
  * Base class for SOFORT XML-Api
@@ -21,29 +47,6 @@
 if(!defined('SOFORTLIB_VERSION')) {
 	define('SOFORTLIB_VERSION','1.5.4');
 }
-
-require_once dirname(__FILE__) . '/sofortLib_abstract.inc.php';
-require_once dirname(__FILE__) . '/sofortLib_confirm_sr.inc.php';
-require_once dirname(__FILE__) . '/sofortLib_edit_sr.inc.php';
-require_once dirname(__FILE__) . '/sofortLib_cancel_sr.inc.php';
-require_once dirname(__FILE__) . '/sofortLib_ideal_banks.inc.php';
-require_once dirname(__FILE__) . '/sofortLib_debit.inc.php';
-require_once dirname(__FILE__) . '/sofortLib_http.inc.php';
-require_once dirname(__FILE__) . '/sofortLib_multipay.inc.php';
-require_once dirname(__FILE__) . '/sofortLib_notification.inc.php';
-require_once dirname(__FILE__) . '/sofortLib_refund.inc.php';
-require_once dirname(__FILE__) . '/sofortLib_transaction_data.inc.php';
-require_once dirname(__FILE__) . '/sofortLib_Logger.inc.php';
-
-/** Include any available helper here **/
-require_once dirname(__FILE__) . '/helper/class.abstract_document.inc.php';
-require_once dirname(__FILE__) . '/helper/class.invoice.inc.php';
-require_once dirname(__FILE__) . '/helper/elements/sofort_element.php';
-require_once dirname(__FILE__) . '/helper/elements/sofort_tag.php';
-require_once dirname(__FILE__) . '/helper/elements/sofort_html_tag.php';
-require_once dirname(__FILE__) . '/helper/elements/sofort_text.php';
-require_once dirname(__FILE__) . '/helper/array_to_xml.php';
-require_once dirname(__FILE__) . '/helper/xml_to_array.php';
 
 
 /**

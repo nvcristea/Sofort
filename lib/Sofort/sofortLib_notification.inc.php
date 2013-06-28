@@ -1,4 +1,7 @@
 <?php
+
+namespace Sofort;
+
 /**
  * Instance of this class handles the callback of Payment Network to notify about a status change
  *

@@ -1,4 +1,7 @@
 <?php
+
+namespace Sofort;
+
 /**
  * Instance of this class handles the callback of SOFORT to notify about a status change, the classic way to do so
  *

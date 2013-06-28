@@ -1,10 +1,11 @@
 <?php
-/// \cond
-require_once('pnag_article.php');
-require_once('pnag_customer.php');
 
-require_once('pnag_article.php');
-require_once('pnag_article.php');
+namespace Sofort\Helper;
+
+use Sofort\Helper\PnagArticle;
+use Sofort\Helper\PnagCustomer;
+
+/// \cond
 /**
  * Copyright (c) 2012 SOFORT AG
  *

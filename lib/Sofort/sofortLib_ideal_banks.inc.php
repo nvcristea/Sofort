@@ -1,5 +1,8 @@
 <?php
-require_once dirname(__FILE__) . '/sofortLib_abstract.inc.php';
+
+namespace Sofort;
+
+use Sofort\SofortLib_Abstract;
 
 /**
  * This class encapsulates retrieval of listed banks of the Netherlands

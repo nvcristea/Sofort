@@ -1,4 +1,7 @@
 <?php
+
+namespace Sofort;
+
 /**
  * class for refund/rueckbuchung
  *

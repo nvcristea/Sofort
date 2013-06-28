@@ -1,4 +1,7 @@
 <?php
+
+namespace Sofort;
+
 /// \cond
 /**
  * interface for SOFORT XML-API

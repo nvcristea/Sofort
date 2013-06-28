@@ -1,5 +1,9 @@
 <?php
-require_once 'sofortLib_classic_notification.inc.php';
+
+namespace Sofort;
+
+use Sofort\SofortLib_ClassicNotification;
+
 /**
  * Setup a sofortueberweisung.de session using the classic api
  * after the configuration of the configuration you will receive

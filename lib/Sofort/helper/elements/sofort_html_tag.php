@@ -1,4 +1,7 @@
 <?php
+
+namespace Sofort\Helper\Elements;
+
 /**
  * @author SOFORT AG (integration@sofort.com)
  * @link http://www.sofort.com/

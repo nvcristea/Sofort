@@ -1,4 +1,7 @@
 <?php
+
+namespace Sofort;
+
 /**
  * Setup a multipay payment session
  * after the configuration of multiple payment methods you will receive
