@@ -4,6 +4,7 @@ namespace Sofort\Helper;
 
 use Sofort\Helper\XmlToArrayException;
 use Sofort\Helper\XmlToArrayNode;
+use Sofort\Helper\XmlToArray;
 
 /**
  * @author SOFORT AG (integration@sofort.com)

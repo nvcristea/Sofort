@@ -2,7 +2,10 @@
 
 namespace Sofort\Helper;
 
+use Sofort\Helper\ArrayToXml;
 use Sofort\Helper\ArrayToXmlException;
+use Sofort\Helper\Elements\SofortTag;
+use Sofort\Helper\Elements\SofortText;
 
 /**
  * @author SOFORT AG (integration@sofort.com)

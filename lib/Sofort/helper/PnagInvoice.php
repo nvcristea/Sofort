@@ -2,6 +2,12 @@
 
 namespace Sofort\Helper;
 
+use Sofort\SofortLibMultipay;
+use Sofort\SofortLibTransactionData;
+use Sofort\SofortLibConfirmSr;
+use Sofort\SofortLibEditSr;
+use Sofort\SofortLibCancelSr;
+
 /**
  * Copyright (c) 2012 SOFORT AG
  *

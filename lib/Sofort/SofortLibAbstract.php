@@ -2,6 +2,9 @@
 
 namespace Sofort;
 
+use Sofort\Helper\ArrayToXml;
+use Sofort\Helper\XmlToArray;
+
 /// \cond
 /**
  * interface for SOFORT XML-API

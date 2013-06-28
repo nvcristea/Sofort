@@ -2,28 +2,10 @@
 
 namespace Sofort;
 
-use Sofort\SofortLibAbstract;
-use Sofort\SofortLibConfirmSr;
-use Sofort\SofortLibEditSr;
-use Sofort\SofortLibCancelSr;
-use Sofort\SofortLibiDealBanks;
-use Sofort\SofortLibDebit;
 use Sofort\SofortLibHttp;
-use Sofort\SofortLibMultipay;
-use Sofort\SofortLibNotification;
-use Sofort\SofortLibRefund;
-use Sofort\SofortLibTransactionData;
 use Sofort\SofortLibLogger;
-
-/** Include any available helper here **/
-use Sofort\Helper\PnagAbstractDocument;
-use Sofort\Helper\PnagInvoice;
-use Sofort\Helper\Elements\SofortElement;
-use Sofort\Helper\Elements\SofortTag;
-use Sofort\Helper\Elements\SofortHtmlTag;
-use Sofort\Helper\Elements\SofortText;
-use Sofort\Helper\ArrayToXml;
 use Sofort\Helper\XmlToArray;
+use Sofort\Helper\Elements\SofortHtmlTag;
 
 /**
  * @mainpage
