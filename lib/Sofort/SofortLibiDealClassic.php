@@ -4,10 +4,10 @@ namespace Sofort;
 
 define('VERSION_CLASSIC','1.2.0');
 
-use Sofort\SofortLib_Http;
-use Sofort\SofortLib_SofortueberweisungClassic;
+use Sofort\SofortLibHttp;
+use Sofort\SofortLibSofortueberweisungClassic;
 use Sofort\SofortLibLogger;
-use Sofort\SofortLib_iDeal_Banks;
+use Sofort\SofortLibiDealBanks;
 
 /**
  * iDeal_Classic extends Sofortueberweisung_Classic, implementing payment via iDeal
@@ -16,7 +16,7 @@ use Sofort\SofortLib_iDeal_Banks;
  * Payment is enabled with this url being sent to iDeal
  *
  * eg:
- * $sofort = $sofortLib_iDealClassic = new SofortLib_iDealClassic ($configurationKey, $password, $hashfunction = 'sha1');
+ * $sofort = $sofortLib_iDealClassic = new SofortLibiDealClassic ($configurationKey, $password, $hashfunction = 'sha1');
  * $sofort->getRelatedBanks(); //get all iDEAL-Banks
  * $sofort->getPaymentUrl(); //returns paymentUrl including (including ...&hash=1234567890&...)
  *
@@ -26,11 +26,11 @@ use Sofort\SofortLib_iDeal_Banks;
  * [http://www.gnu.org/licenses/gpl-2.0.html]
  *
  * $Date: 2012-11-23 17:15:47 +0100 (Fri, 23 Nov 2012) $
- * @version SofortLib 1.5.4  $Id: sofortLib_ideal_classic.php 5773 2012-11-23 16:15:47Z dehn $
+ * @version SofortLib 1.5.4  $Id: SofortLibiDealClassic.php 5773 2012-11-23 16:15:47Z dehn $
  * @author SOFORT AG http://www.sofort.com (integration@sofort.com)
  *
  */
-class SofortLib_iDealClassic extends SofortLib_SofortueberweisungClassic {
+class SofortLibiDealClassic extends SofortLibSofortueberweisungClassic {
 	
 	private $_apiUrl = '';
 	
@@ -38,7 +38,7 @@ class SofortLib_iDealClassic extends SofortLib_SofortueberweisungClassic {
 	
 	private $_relatedBanks = array();
 	
-	private $_SofortLib_iDeal_Banks = null;
+	private $_SofortLibiDealBanks = null;
 	
 	protected $_password;
 	
@@ -69,7 +69,7 @@ class SofortLib_iDealClassic extends SofortLib_SofortueberweisungClassic {
 	
 	/**
 	 * 
-	 * Contructor for SofortLib_iDealClassic
+	 * Contructor for SofortLibiDealClassic
 	 * @param string $configKey
 	 * @param string $password
 	 * @param string $hashFunction
@@ -81,7 +81,7 @@ class SofortLib_iDealClassic extends SofortLib_SofortueberweisungClassic {
 		$this->_projectId = $this->params['project_id'] = $projectId;
 		$this->_hashFunction = strtolower($hashFunction);
 		$this->_paymentUrl = $this->_getPaymentDomain();
-		$this->_SofortLib_iDeal_Banks = new SofortLib_iDeal_Banks($configKey, $this->_paymentUrl);
+		$this->_SofortLibiDealBanks = new SofortLibiDealBanks($configKey, $this->_paymentUrl);
 	}
 	
 	
@@ -111,7 +111,7 @@ class SofortLib_iDealClassic extends SofortLib_SofortueberweisungClassic {
 	/**
 	 * Getter for occurred errors
 	 * (non-PHPdoc)
-	 * @see SofortLib_SofortueberweisungClassic::getError()
+	 * @see SofortLibSofortueberweisungClassic::getError()
 	 */
 	public function getError(){
 		return $this->error;
@@ -123,15 +123,15 @@ class SofortLib_iDealClassic extends SofortLib_SofortueberweisungClassic {
 	 * @return array
 	 */
 	public function getRelatedBanks() {
-		$this->_SofortLib_iDeal_Banks->sendRequest();
-		return $this->_SofortLib_iDeal_Banks->getBanks();
+		$this->_SofortLibiDealBanks->sendRequest();
+		return $this->_SofortLibiDealBanks->getBanks();
 	}
 	
 	
 	/**
 	 * Getter for the payment domain
 	 * (non-PHPdoc)
-	 * @see SofortLib_SofortueberweisungClassic::_getPaymentDomain()
+	 * @see SofortLibSofortueberweisungClassic::_getPaymentDomain()
 	 */
 	protected function _getPaymentDomain() {
 		return (getenv('idealApiUrl') != '') ? getenv('idealApiUrl') : $this->_paymentUrl;

@@ -2,17 +2,17 @@
 
 namespace Sofort;
 
-use Sofort\SofortLib_Abstract;
-use Sofort\SofortLib_ConfirmSr;
-use Sofort\SofortLib_EditSr;
-use Sofort\SofortLib_CancelSr;
-use Sofort\SofortLib_iDeal_Banks;
-use Sofort\SofortLib_Debit;
-use Sofort\SofortLib_Http;
-use Sofort\SofortLib_Multipay;
-use Sofort\SofortLib_Notification;
-use Sofort\SofortLib_Refund;
-use Sofort\SofortLib_TransactionData;
+use Sofort\SofortLibAbstract;
+use Sofort\SofortLibConfirmSr;
+use Sofort\SofortLibEditSr;
+use Sofort\SofortLibCancelSr;
+use Sofort\SofortLibiDealBanks;
+use Sofort\SofortLibDebit;
+use Sofort\SofortLibHttp;
+use Sofort\SofortLibMultipay;
+use Sofort\SofortLibNotification;
+use Sofort\SofortLibRefund;
+use Sofort\SofortLibTransactionData;
 use Sofort\SofortLibLogger;
 
 /** Include any available helper here **/
@@ -39,7 +39,7 @@ use Sofort\Helper\XmlToArray;
  * [http://www.gnu.org/licenses/gpl-2.0.html]
  *
  * $Date: 2012-11-23 17:15:47 +0100 (Fri, 23 Nov 2012) $
- * @version SofortLib 1.5.4  $Id: sofortLib.php 5773 2012-11-23 16:15:47Z dehn $
+ * @version SofortLib 1.5.4  $Id: SofortLib.php 5773 2012-11-23 16:15:47Z dehn $
  * @author SOFORT AG http://www.sofort.com (integration@sofort.com)
  *
  */
@@ -89,7 +89,7 @@ class SofortLib {
 	public function __construct($userId = '', $apiKey = '', $apiUrl = '') {
 		$this->_userId = $userId;
 		$this->_apiKey = $apiKey;
-		$this->SofortLibHttp = new SofortLib_Http($apiUrl, $this->_getHeaders());
+		$this->SofortLibHttp = new SofortLibHttp($apiUrl, $this->_getHeaders());
 		$this->SofortLibLogger = new SofortLibLogger();
 		$this->enableLogging = (getenv('sofortDebug') == 'true') ? true : false;
 	}

@@ -5,7 +5,7 @@ namespace Sofort;
 /**
  * This class is for confirming and changing statuses of invoices
  *
- * eg: $confirmObj = new SofortLib_ConfirmSr('yourapikey');
+ * eg: $confirmObj = new SofortLibConfirmSr('yourapikey');
  *
  * $confirmObj->confirmInvoice('1234-456-789654-31321')->sendRequest();
  *
@@ -15,11 +15,11 @@ namespace Sofort;
  * [http://www.gnu.org/licenses/gpl-2.0.html]
  *
  * $Date: 2012-11-23 17:15:47 +0100 (Fri, 23 Nov 2012) $
- * @version SofortLib 1.5.4  $Id: sofortLib_confirm_sr.inc.php 5773 2012-11-23 16:15:47Z dehn $
+ * @version SofortLib 1.5.4  $Id: SofortLibConfirmSr.php 5773 2012-11-23 16:15:47Z dehn $
  * @author SOFORT AG http://www.sofort.com (integration@sofort.com)
  *
  */
-class SofortLib_ConfirmSr extends SofortLib_Abstract {
+class SofortLibConfirmSr extends SofortLibAbstract {
 	
 	protected $_parameters = array();
 	
@@ -49,7 +49,7 @@ class SofortLib_ConfirmSr extends SofortLib_Abstract {
 	/**
 	 * Set the transaction you want to confirm
 	 * @param String $transaction Transaction Id
-	 * @return SofortLib_ConfirmSr
+	 * @return SofortLibConfirmSr
 	 */
 	public function setTransaction($transaction, $invoice = 0) {
 		if ($this->_apiVersion == 1) {
@@ -104,7 +104,7 @@ class SofortLib_ConfirmSr extends SofortLib_Abstract {
 	/**
 	 * set a comment for refunds
 	 * just useable with api version 1.0
-	 * @see SofortLib_EditSr
+	 * @see SofortLibEditSr
 	 * @deprecated
 	 * @param string $arg
 	 */
@@ -118,7 +118,7 @@ class SofortLib_ConfirmSr extends SofortLib_Abstract {
 	/**
 	 * add one item to the cart if you want to change the invoice
 	 * just useable with api version 1.0
-	 * @see SofortLib_EditSr
+	 * @see SofortLibEditSr
 	 * @deprecated
 	 * @param string $productNumber product number, EAN code, ISBN number or similar
 	 * @param string $title description of this title
@@ -148,7 +148,7 @@ class SofortLib_ConfirmSr extends SofortLib_Abstract {
 	
 	/**
 	 * TODO: implement removal of items
-	 * @see SofortLib_EditSr
+	 * @see SofortLibEditSr
 	 * @deprecated
 	 * @param $productId
 	 * @param $quantity
@@ -170,7 +170,7 @@ class SofortLib_ConfirmSr extends SofortLib_Abstract {
 	/**
 	 * 
 	 * just useable with api version 1.0
-	 * @see SofortLib_EditSr
+	 * @see SofortLibEditSr
 	 * @deprecated
 	 * @param array $cartItems
 	 */
@@ -202,10 +202,10 @@ class SofortLib_ConfirmSr extends SofortLib_Abstract {
 	/**
 	 * cancel the invoice
 	 * just useable with api version 1.0
-	 * @see SofortLib_EditSr
+	 * @see SofortLibEditSr
 	 * @deprecated
 	 * @param string $transaction the transaction id
-	 * @return SofortLib_ConfirmSr
+	 * @return SofortLibConfirmSr
 	 */
 	public function cancelInvoice($transaction = '') {
 		$this->setApiVersion('1.0');
@@ -227,7 +227,7 @@ class SofortLib_ConfirmSr extends SofortLib_Abstract {
 	/**
 	 * confirm the invoice
 	 * @param string $transaction the transaction id
-	 * @return SofortLib_ConfirmSr
+	 * @return SofortLibConfirmSr
 	 */
 	public function confirmInvoice($transaction = '') {
 		if ($this->_apiVersion == 1) {
@@ -261,7 +261,7 @@ class SofortLib_ConfirmSr extends SofortLib_Abstract {
 	/**
 	 * Parse the XML (override)
 	 * (non-PHPdoc)
-	 * @see SofortLib_Abstract::_parseXml()
+	 * @see SofortLibAbstract::_parseXml()
 	 */
 	protected function _parseXml() {}
 	

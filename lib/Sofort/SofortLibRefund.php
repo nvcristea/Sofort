@@ -11,11 +11,11 @@ namespace Sofort;
  * [http://www.gnu.org/licenses/gpl-2.0.html]
  *
  * $Date: 2012-11-23 17:26:25 +0100 (Fri, 23 Nov 2012) $
- * @version SofortLib 1.5.4  $Id: sofortLib_refund.inc.php 5776 2012-11-23 16:26:25Z dehn $
+ * @version SofortLib 1.5.4  $Id: SofortLibRefund.php 5776 2012-11-23 16:26:25Z dehn $
  * @author SOFORT AG http://www.sofort.com (integration@sofort.com)
  *
  */
-class SofortLib_Refund extends SofortLib_Abstract {
+class SofortLibRefund extends SofortLibAbstract {
 	
 	protected $_parameters = array();
 	
@@ -26,7 +26,7 @@ class SofortLib_Refund extends SofortLib_Abstract {
 	
 	/**
 	 * 
-	 * Constructor for SofortLib_Refund
+	 * Constructor for SofortLibRefund
 	 * @param string $configKey
 	 */
 	public function __construct($configKey = '') {
@@ -52,7 +52,7 @@ class SofortLib_Refund extends SofortLib_Abstract {
 	 * @param string $transaction transaction id of transfer you want to refund
 	 * @param float $amount amount of money to refund, less or equal to amount of original transfer
 	 * @param string $comment comment that will be displayed in  admin-menu later
-	 * @return SofortLib_Refund $this
+	 * @return SofortLibRefund $this
 	 */
 	public function addRefund($transaction, $amount, $comment = '') {
 		$this->_parameters['refund'][] = array(
@@ -70,7 +70,7 @@ class SofortLib_Refund extends SofortLib_Abstract {
 	 * @param string $bank_code bank code of bank
 	 * @param string $account_number account number
 	 * @param string $holder Name/Holder of this account
-	 * @return SofortLib_Multipay $this
+	 * @return SofortLibMultipay $this
 	 */
 	public function setSenderAccount($bankCode, $accountNumber, $holder = '') {
 		$this->_parameters['sender'] = array(
@@ -198,7 +198,7 @@ class SofortLib_Refund extends SofortLib_Abstract {
 	
 	/**
 	 * Parse the XML (override)
-	 * @see SofortLib_Abstract::_parseXml()
+	 * @see SofortLibAbstract::_parseXml()
 	 */
 	protected function _parseXml() {}
 	

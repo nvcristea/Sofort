@@ -14,12 +14,12 @@ namespace Sofort;
  * [http://www.gnu.org/licenses/gpl-2.0.html]
  *
  * $Date: 2012-11-23 17:15:47 +0100 (Fri, 23 Nov 2012) $
- * @version SofortLib 1.5.4  $Id: sofortLib_http.inc.php 5773 2012-11-23 16:15:47Z dehn $
+ * @version SofortLib 1.5.4  $Id: SofortLibHttp.php 5773 2012-11-23 16:15:47Z dehn $
  * @author SOFORT AG http://www.sofort.com (integration@sofort.com)
  * @internal
  *
  */
-class SofortLib_Http {
+class SofortLibHttp {
 	
 	public $headers;
 	
@@ -42,7 +42,7 @@ class SofortLib_Http {
 	
 	/**
 	 *
-	 * Constructor for SofortLib_Http
+	 * Constructor for SofortLibHttp
 	 * @param string $url
 	 * @param array $headers
 	 * @param boolean $compression

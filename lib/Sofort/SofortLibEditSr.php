@@ -5,7 +5,7 @@ namespace Sofort;
 /**
  * This class is for confirming and changing statuses of invoices
  *
- * eg: $confirmObj = new SofortLib_EditSr('yourapikey');
+ * eg: $confirmObj = new SofortLibEditSr('yourapikey');
  *
  * $confirmObj->confirmInvoice('1234-456-789654-31321')->sendRequest();
  *
@@ -15,11 +15,11 @@ namespace Sofort;
  * [http://www.gnu.org/licenses/gpl-2.0.html]
  *
  * $Date: 2012-05-21 16:53:26 +0200 (Mo, 21 Mai 2012) $
- * @version SofortLib 1.5.4  $Id: sofortLib_edit_sr.inc.php 4191 2012-05-21 14:53:26Z niehoff $
+ * @version SofortLib 1.5.4  $Id: SofortLibEditSr.php 4191 2012-05-21 14:53:26Z niehoff $
  * @author SOFORT AG http://www.sofort.com (integration@sofort.com)
  *
  */
-class SofortLib_EditSr extends SofortLib_Abstract {
+class SofortLibEditSr extends SofortLibAbstract {
 	
 	protected $_apiVersion = '1.0';
 	
@@ -33,7 +33,7 @@ class SofortLib_EditSr extends SofortLib_Abstract {
 	
 	/**
 	 *
-	 * Constructor for SofortLib_EditSr
+	 * Constructor for SofortLibEditSr
 	 * @param String $apikey your API-key
 	 */
 	public function __construct($configKey = '') {
@@ -160,7 +160,7 @@ class SofortLib_EditSr extends SofortLib_Abstract {
 	
 	/**
 	 * Parse the XML (override)
-	 * @see SofortLib_Abstract::_parseXml()
+	 * @see SofortLibAbstract::_parseXml()
 	 */
 	protected function _parseXml() {
 		$this->_file = isset($this->_response['invoice']['download_url']['@data']) ? $this->_response['invoice']['download_url']['@data'] : '';

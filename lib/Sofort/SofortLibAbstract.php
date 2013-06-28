@@ -17,12 +17,12 @@ namespace Sofort;
  * [http://www.gnu.org/licenses/gpl-2.0.html]
  *
  * $Date: 2012-11-23 11:34:40 +0100 (Fri, 23 Nov 2012) $
- * @version SofortLib 1.5.4  $Id: sofortLib_abstract.inc.php 5748 2012-11-23 10:34:40Z Niehoff $
+ * @version SofortLib 1.5.4  $Id: SofortLibAbstract.php 5748 2012-11-23 10:34:40Z Niehoff $
  * @author SOFORT AG http://www.sofort.com (integration@sofort.com)
  * @internal
  *
  */
-class SofortLib_Abstract extends SofortLib {
+class SofortLibAbstract extends SofortLib {
 	
 	protected $_validateOnly = false;
 	
@@ -43,7 +43,7 @@ class SofortLib_Abstract extends SofortLib {
 	 * send this message and get response
 	 * save all warnings - errors are only saved if no payment-url is send from pnag
 	 *
-	 * @return SofortLib_TransactionData $this
+	 * @return SofortLibTransactionData $this
 	 */
 	public function sendRequest() {
 		$requestData[$this->_xmlRootTag] = $this->_parameters;

@@ -13,7 +13,7 @@ use Sofort\Helper\PnagCustomer;
  * [http://www.gnu.org/licenses/gpl-2.0.html]
  *
  * $Date: 2012-11-23 11:34:40 +0100 (Fri, 23 Nov 2012) $
- * @version SofortLib 1.5.4  $Id: class.abstract_document.inc.php 5748 2012-11-23 10:34:40Z Niehoff $
+ * @version SofortLib 1.5.4  $Id: PnagAbstractDocument.php 5748 2012-11-23 10:34:40Z Niehoff $
  * @author SOFORT AG http://www.sofort.com (integration@sofort.com)
  * @internal
  *
