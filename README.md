@@ -11,3 +11,18 @@ This version of Sofort is a implementation of SOFORTLIB VERSION 1.5.4 with the f
  - Future more testable design intended
  - Future better test coverage intended
 
+
+
+### Install Sofort Library via Composer
+
+The preferred way to install this bundle is to rely on [Composer](http://getcomposer.org).
+Just check on [Packagist](http://packagist.org/packages/enkas/sofort) the version you want to install (in the following example, we used "dev-master") and add it to your `composer.json`:
+
+``` js
+{
+    "require": {
+        // ...
+        "enkas/sofort": "dev-master"
+    }
+}
+```
