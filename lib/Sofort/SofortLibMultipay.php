@@ -1,4 +1,7 @@
 <?php
+
+namespace Sofort;
+
 /**
  * Setup a multipay payment session
  * after the configuration of multiple payment methods you will receive
@@ -6,7 +9,7 @@
  * url you can use the transaction id for future reference of this payment
  *
  * example by usage:
- * $objMultipay = new SofortLib_Multipays('my-API-KEY');
+ * $objMultipay = new SofortLibMultipays('my-API-KEY');
  * $objMultipay->setSofortueberweisung(); 					//OR setSofortrechnung(), setSofortvorkasse() etc.
  * $objMultipay->set...($param);  							//set params for PNAG-API (watch API-documentation for needed params)
  * $objMultipay->add...($param);							//add params for PNAG-API (watch API-documentation for needed params)
@@ -23,11 +26,11 @@
  * [http://www.gnu.org/licenses/gpl-2.0.html]
  *
  * $Date: 2012-11-23 17:15:47 +0100 (Fri, 23 Nov 2012) $
- * @version SofortLib 1.5.4  $Id: sofortLib_multipay.inc.php 5773 2012-11-23 16:15:47Z dehn $
+ * @version SofortLib 1.5.4  $Id: SofortLibMultipay.php 5773 2012-11-23 16:15:47Z dehn $
  * @author SOFORT AG http://www.sofort.com (integration@sofort.com)
  *
  */
-class SofortLib_Multipay extends SofortLib_Abstract {
+class SofortLibMultipay extends SofortLibAbstract {
 	
 	protected $_parameters = array();
 	
@@ -61,7 +64,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	 * browser settings and ip will be used as well
 	 *
 	 * @param string $arg de|en|nl|fr ...
-	 * @return SofortLib_Multipay
+	 * @return SofortLibMultipay
 	 */
 	public function setLanguageCode($arg) {
 		$this->_parameters['language_code'] = $arg;
@@ -76,7 +79,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	 * defaults to unlimited if not set
 	 *
 	 * @param int $arg timeout in seconds
-	 * @return SofortLib_Multipay
+	 * @return SofortLibMultipay
 	 */
 	public function setTimeout($arg) {
 		$this->_parameters['timeout'] = $arg;
@@ -89,7 +92,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	 * this will be used for sofortvorkasse and sofortrechnung
 	 *
 	 * @param string $arg email address
-	 * @return SofortLib_Multipay
+	 * @return SofortLibMultipay
 	 */
 	public function setEmailCustomer($arg) {
 		$this->_parameters['email_customer'] = $arg;
@@ -101,7 +104,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	 * set the phone number of the customer
 	 *
 	 * @param string $arg phone number
-	 * @return SofortLib_Multipay
+	 * @return SofortLibMultipay
 	 */
 	public function setPhoneNumberCustomer($arg) {
 		$this->_parameters['phone_customer'] = $arg;
@@ -113,7 +116,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	 * add another variable this can be your internal order id or similar
 	 *
 	 * @param string $arg the contents of the variable
-	 * @return SofortLib_Multipay
+	 * @return SofortLibMultipay
 	 */
 	public function addUserVariable($arg) {
 		$this->_parameters['user_variables']['user_variable'][] = $arg;
@@ -127,7 +130,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	 * @param string $bank_code bank code of bank
 	 * @param string $account_number account number
 	 * @param string $holder Name/Holder of this account
-	 * @return SofortLib_Multipay $this
+	 * @return SofortLibMultipay $this
 	 */
 	public function setSenderAccount($bankCode, $accountNumber, $holder) {
 		$this->_parameters['sender'] = array(
@@ -144,7 +147,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	 *
 	 * @param double $arg
 	 * @param string $currency currency of this transaction, default EUR
-	 * @return SofortLib_Multipay $this
+	 * @return SofortLibMultipay $this
 	 */
 	public function setAmount($arg, $currency = 'EUR') {
 		$this->_parameters['amount'] = $arg;
@@ -158,7 +161,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	 *
 	 * @param string $arg max 27 characters
 	 * @param string $arg2 max 27 characters
-	 * @return SofortLib_Multipay $this
+	 * @return SofortLibMultipay $this
 	 */
 	public function setReason($arg, $arg2 = '') {
 		$arg = preg_replace('#[^a-zA-Z0-9+-\.,]#', ' ', $arg);
@@ -187,7 +190,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	 * displayed
 	 *
 	 * @param string $arg the url after a successful transaction
-	 * @return SofortLib_Multipay
+	 * @return SofortLibMultipay
 	 */
 	public function setSuccessUrl($successUrl, $redirect = true) {
 		$this->_parameters['success_url'] = $successUrl;
@@ -202,7 +205,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	 * his cart or to the payment selection page
 	 *
 	 * @param string $arg url for aborting the transaction
-	 * @return SofortLib_Multipay
+	 * @return SofortLibMultipay
 	 */
 	public function setAbortUrl($arg) {
 		$this->_parameters['abort_url'] = $arg;
@@ -215,7 +218,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	 * he will be redirected to this page
 	 *
 	 * @param string $arg url
-	 * @return SofortLib_Multipay
+	 * @return SofortLibMultipay
 	 */
 	public function setTimeoutUrl($arg) {
 		$this->_parameters['timeout_url'] = $arg;
@@ -225,11 +228,11 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	
 	/**
 	 * set the url where you want notification about status changes
-	 * being sent to. Use SofortLib_Notification and SofortLib_TransactionData
+	 * being sent to. Use SofortLibNotification and SofortLibTransactionData
 	 * to further process that notification
 	 *
 	 * @param string $arg url
-	 * @return SofortLib_Multipay
+	 * @return SofortLibMultipay
 	 */
 	public function setNotificationUrl($arg) {
 		$this->_parameters['notification_urls']['notification_url'] = array($arg);
@@ -243,7 +246,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	 * an order (e.g. an ERP system)
 	 *
 	 * @param string $arg url
-	 * @return SofortLib_Multipay
+	 * @return SofortLibMultipay
 	 */
 	public function addNotificationUrl($arg) {
 		$this->_parameters['notification_urls']['notification_url'][] = $arg;
@@ -256,7 +259,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	 * being sent to.
 	 *
 	 * @param string $arg email address
-	 * @return SofortLib_Multipay
+	 * @return SofortLibMultipay
 	 */
 	public function setNotificationEmail($arg) {
 		$this->_parameters['notification_emails']['notification_email'] = array($arg);
@@ -268,7 +271,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	 * you can set set multiple emails for receiving notifications
 	 *
 	 * @param string $arg email
-	 * @return SofortLib_Multipay
+	 * @return SofortLibMultipay
 	 */
 	public function addNotificationEmail($arg) {
 		$this->_parameters['notification_emails']['notification_email'][] = $arg;
@@ -282,7 +285,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	 * find out if someone uses an outdated module
 	 *
 	 * @param string $arg version string of your module
-	 * @return SofortLib_Multipay
+	 * @return SofortLibMultipay
 	 */
 	public function setVersion($arg) {
 		$this->_parameters['interface_version'] = $arg;
@@ -293,7 +296,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	/**
 	 * add sofortueberweisung as payment method
 	 * @param double $amount this amount only applies to this payment method
-	 * @return SofortLib_Multipay $this
+	 * @return SofortLibMultipay $this
 	 */
 	public function setSofortueberweisung($amount = '') {
 		$this->_paymentMethods[] = 'su';
@@ -314,7 +317,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	 * add sofortueberweisung as payment method
 	 * adds customer protection
 	 * @param double $amount this amount only applies to this payment method
-	 * @return SofortLib_Multipay $this
+	 * @return SofortLibMultipay $this
 	 */
 	public function setSofortueberweisungCustomerprotection($customerProtection = true) {
 		$this->_paymentMethods[] = 'su';
@@ -331,7 +334,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	/**
 	 * add sofortlastschrift as payment method
 	 * @param double $amount this amount only applies to this payment method
-	 * @return SofortLib_Multipay $this
+	 * @return SofortLibMultipay $this
 	 */
 	public function setSofortlastschrift($amount = '') {
 		$this->_paymentMethods[] = 'sl';
@@ -360,7 +363,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	 * @param string $city
 	 * @param int $salutation [2|3] 2=Mr. 3=Mrs.
 	 * @param string $country country code, only DE allowed at the moment
-	 * @return SofortLib_Multipay $this
+	 * @return SofortLibMultipay $this
 	 */
 	public function setSofortlastschriftAddress($firstname, $lastname, $street, $streetNumber, $zipcode, $city, $salutation, $country = 'DE') {
 		$this->_parameters['sl']['invoice_address']['salutation'] = $salutation;
@@ -378,7 +381,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	/**
 	 * add lastschrift as payment method
 	 * @param double $amount this amount only applies to this payment method
-	 * @return SofortLib_Multipay $this
+	 * @return SofortLibMultipay $this
 	 */
 	public function setLastschrift($amount = '') {
 		$this->_paymentMethods[] = 'ls';
@@ -438,7 +441,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	 * @param int $salutation [2|3] 2=Mr. 3=Mrs.
 	 * @param string $country country code, only DE allowed at the moment
 	 *
-	 * @return SofortLib_Multipay object
+	 * @return SofortLibMultipay object
 	 */
 	public function setLastschriftAddress($firstname, $lastname, $street, $streetNumber, $zipcode, $city, $salutation, $country = 'DE') {
 		$this->_parameters['ls']['invoice_address']['salutation'] = $salutation;
@@ -460,7 +463,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	 * the total amount of this payment method will
 	 * be determined by the total of the cart
 	 *
-	 * @return SofortLib_Multipay object
+	 * @return SofortLibMultipay object
 	 */
 	public function setSofortrechnung() {
 		$this->_paymentMethods[] = 'sr';
@@ -477,7 +480,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	 * add sofortvorkasse as payment method
 	 * @param double $amount this amount only applies to this payment method
 	 *
-	 * @return SofortLib_Multipay objet
+	 * @return SofortLibMultipay objet
 	 */
 	public function setSofortvorkasse($amount = '') {
 		$this->_paymentMethods[] = 'sv';
@@ -498,7 +501,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	 * add sofortvorkasse as payment method
 	 * adds customer protection
 	 * @param double $amount this amount only applies to this payment method
-	 * @return SofortLib_Multipay $this
+	 * @return SofortLibMultipay $this
 	 */
 	public function setSofortvorkasseCustomerprotection($customerProtection = true) {
 		$this->_paymentMethods[] = 'sv';
@@ -515,7 +518,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	/**
 	 * set the customer id which will appear on top of the invoice
 	 * @param int $arg
-	 * @return SofortLib_Multipay $this
+	 * @return SofortLibMultipay $this
 	 */
 	public function setSofortrechnungCustomerId($arg) {
 		$this->_parameters['sr']['customer_id'] = $arg;
@@ -526,7 +529,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	/**
 	 * set the order id which will appear on top of the invoice
 	 * @param int $arg
-	 * @return SofortLib_Multipay $this
+	 * @return SofortLibMultipay $this
 	 */
 	public function setSofortrechnungOrderId($arg) {
 		$this->_parameters['sr']['order_id'] = $arg;
@@ -537,7 +540,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	/**
 	 * set debitor vat number for invoice
 	 * @param string $vatNumber
-	 * @return SofortLib_Multipay $this
+	 * @return SofortLibMultipay $this
 	 */
 	public function setDebitorVatNumber($vatNumber) {
 		$this->_parameters['sr']['debitor_vat_number'] = $vatNumber;
@@ -556,7 +559,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	 * @param string $city
 	 * @param int $salutation [2|3] 2 = Mr. 3 = Mrs.
 	 * @param string $country country code, only DE allowed at the moment
-	 * @return SofortLib_Multipay $this
+	 * @return SofortLibMultipay $this
 	 */
 	public function setSofortrechnungInvoiceAddress($firstname, $lastname, $street, $streetNumber, $zipcode, $city, $salutation, $country = 'DE', $nameAdditive = '', $streetAdditive = '', $companyName = '') {
 		$this->_parameters['sr']['invoice_address']['salutation'] = $salutation;
@@ -585,7 +588,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	 * @param string $city
 	 * @param int $salutation [2|3] 1 = Mr. 2 = Mrs.
 	 * @param string $country country code, only DE allowed at the moment
-	 * @return SofortLib_Multipay $this
+	 * @return SofortLibMultipay $this
 	 */
 	public function setSofortrechnungShippingAddress($firstname, $lastname, $street, $streetNumber, $zipcode, $city, $salutation, $country = 'DE', $nameAdditive = '', $streetAdditive = '', $companyName = '') {
 		$this->_parameters['sr']['shipping_address']['salutation'] = $salutation;
@@ -872,7 +875,7 @@ class SofortLib_Multipay extends SofortLib_Abstract {
 	/**
 	 * Parse the XML (override)
 	 * (non-PHPdoc)
-	 * @see SofortLib_Abstract::_parseXml()
+	 * @see SofortLibAbstract::_parseXml()
 	 */
 	protected function _parseXml() {
 		$this->_transactionId = isset($this->_response['new_transaction']['transaction']['@data'])

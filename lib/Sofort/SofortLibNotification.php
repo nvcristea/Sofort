@@ -1,12 +1,15 @@
 <?php
+
+namespace Sofort;
+
 /**
  * Instance of this class handles the callback of Payment Network to notify about a status change
  *
  * In rare cases notifications might be doubled or even wrong alltogether (if
  * send by a malicious user). So don't use this to change your status but instead
- * use the transaction id to query the webservice for detailed data (SofortLib_TransactionData)
+ * use the transaction id to query the webservice for detailed data (SofortLibTransactionData)
  *
- * eg: $notificationObj = new SofortLib_Notification();
+ * eg: $notificationObj = new SofortLibNotification();
  *
  * $transactionId = $notificationObj->getNotification();
  *
@@ -16,11 +19,11 @@
  * [http://www.gnu.org/licenses/gpl-2.0.html]
  *
  * $Date: 2012-11-23 17:15:47 +0100 (Fri, 23 Nov 2012) $
- * @version SofortLib 1.5.4  $Id: sofortLib_notification.inc.php 5773 2012-11-23 16:15:47Z dehn $
+ * @version SofortLib 1.5.4  $Id: SofortLibNotification.php 5773 2012-11-23 16:15:47Z dehn $
  * @author SOFORT AG http://www.sofort.com (integration@sofort.com)
  *
  */
-class SofortLib_Notification extends SofortLib_Abstract {
+class SofortLibNotification extends SofortLibAbstract {
 	
 	protected $_parameters = array();
 	
@@ -32,7 +35,7 @@ class SofortLib_Notification extends SofortLib_Abstract {
 	
 	
 	/**
-	 * Constructor for SofortLib_Notification
+	 * Constructor for SofortLibNotification
 	 */
 	public function __construct() {
 		parent::__construct('', '', '');
@@ -69,7 +72,7 @@ class SofortLib_Notification extends SofortLib_Abstract {
 	/**
 	 * Sending a request is not possible
 	 * (non-PHPdoc)
-	 * @see SofortLib_Abstract::sendRequest()
+	 * @see SofortLibAbstract::sendRequest()
 	 */
 	public function sendRequest() {
 		trigger_error('sendRequest() not possible in this case', E_USER_NOTICE);

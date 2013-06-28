@@ -1,9 +1,12 @@
 <?php
+
+namespace Sofort;
+
 /**
  * This class is  for retrieving information about transactions,
  * you can search by transaction-id or by date
  *
- * eg: $transactionDataObj = new SofortLib_TransactionData('yourapikey');
+ * eg: $transactionDataObj = new SofortLibTransactionData('yourapikey');
  *
  * $transactionDataObj->setTransaction('1234-456-789654-31321')->sendRequest();
  *
@@ -15,11 +18,11 @@
  * [http://www.gnu.org/licenses/gpl-2.0.html]
  *
  * $Date: 2013-04-29 13:22:26 +0200 (Mon, 29 Apr 2013) $
- * @version SofortLib 1.5.4  $Id: sofortLib_transaction_data.inc.php 6103 2013-04-29 11:22:26Z dehn $
+ * @version SofortLib 1.5.4  $Id: SofortLibTransactionData.php 6103 2013-04-29 11:22:26Z dehn $
  * @author SOFORT AG http://www.sofort.com (integration@sofort.com)
  *
  */
-class SofortLib_TransactionData extends SofortLib_Abstract {
+class SofortLibTransactionData extends SofortLibAbstract {
 	
 	protected $_parameters = array();
 	
@@ -32,7 +35,7 @@ class SofortLib_TransactionData extends SofortLib_Abstract {
 	
 	/**
 	 *
-	 * Constructor for SofortLib_TransactionData
+	 * Constructor for SofortLibTransactionData
 	 * @param string $configKey
 	 */
 	public function __construct($configKey = '') {
@@ -48,7 +51,7 @@ class SofortLib_TransactionData extends SofortLib_Abstract {
 	 * detailed information about a single transaction
 	 *
 	 * @param String $arg
-	 * @return SofortLib_TransactionData $this
+	 * @return SofortLibTransactionData $this
 	 */
 	public function setTransaction($arg) {
 		$this->_parameters['transaction'] = $arg;
@@ -62,7 +65,7 @@ class SofortLib_TransactionData extends SofortLib_Abstract {
 	 * at once
 	 *
 	 * @param String $arg
-	 * @return SofortLib_TransactionData $this
+	 * @return SofortLibTransactionData $this
 	 */
 	public function addTransaction($arg) {
 		if (is_array($arg)) {
@@ -85,7 +88,7 @@ class SofortLib_TransactionData extends SofortLib_Abstract {
 	 *
 	 * @param string $from date possible formats: 2011-01-25 or 2011-01-25T19:01:02+02:00
 	 * @param string $to date possible formats: 2011-01-25 or 2011-01-25T19:01:02+02:00
-	 * @return SofortLib_TransactionData $this
+	 * @return SofortLibTransactionData $this
 	 * @see setNumber()
 	 */
 	public function setTime($from, $to) {
@@ -100,7 +103,7 @@ class SofortLib_TransactionData extends SofortLib_Abstract {
 	 *
 	 * @param int $number number of results [0-100]
 	 * @param int $page result page
-	 * @return SofortLib_TransactionData $this
+	 * @return SofortLibTransactionData $this
 	 * @see setTime()
 	 */
 	public function setNumber($number, $page = '1') {
@@ -1000,7 +1003,7 @@ class SofortLib_TransactionData extends SofortLib_Abstract {
 	/**
 	 * Parse the XML (override)
 	 * (non-PHPdoc)
-	 * @see SofortLib_Abstract::_parseXml()
+	 * @see SofortLibAbstract::_parseXml()
 	 */
 	protected function _parseXml() {
 		if (isset($this->_response['transactions']['transaction_details'])) {

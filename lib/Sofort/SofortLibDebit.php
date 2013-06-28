@@ -1,4 +1,7 @@
 <?php
+
+namespace Sofort;
+
 /**
  * class for handling debit/lastschrift
  *
@@ -8,11 +11,11 @@
  * [http://www.gnu.org/licenses/gpl-2.0.html]
  *
  * $Date: 2013-02-20 18:28:51 +0100 (Wed, 20 Feb 2013) $
- * @version SofortLib 1.5.4  $Id: sofortLib_debit.inc.php 5989 2013-02-20 17:28:51Z niehoff $
+ * @version SofortLib 1.5.4  $Id: SofortLibDebit.php 5989 2013-02-20 17:28:51Z niehoff $
  * @author SOFORT AG http://www.sofort.com (integration@sofort.com)
  *
  */
-class SofortLib_Debit extends SofortLib_Abstract {
+class SofortLibDebit extends SofortLibAbstract {
 	
 	protected $_response = array();
 	
@@ -23,7 +26,7 @@ class SofortLib_Debit extends SofortLib_Abstract {
 	
 	/**
 	 *
-	 * Constructor for SofortLib_Debit
+	 * Constructor for SofortLibDebit
 	 * @param string $configKey
 	 */
 	public function __construct($configKey = '') {
@@ -50,7 +53,7 @@ class SofortLib_Debit extends SofortLib_Abstract {
 	 * Id of your Sofortlastschrift project
 	 *
 	 * @param int $id project id
-	 * @return SofortLib_Debit $this
+	 * @return SofortLibDebit $this
 	 */
 	public function setProjectId($id) {
 		$this->_parameters['project_id'] = $id;
@@ -63,7 +66,7 @@ class SofortLib_Debit extends SofortLib_Abstract {
 	 * automatically called in constructor and set to today
 	 *
 	 * @param String $date date in Format Y-m-d (eg: 2011-01-20), default: today
-	 * @return SofortLib_Debit $this
+	 * @return SofortLibDebit $this
 	 */
 	public function setDate($date = '') {
 		if (empty($date)) {
@@ -81,7 +84,7 @@ class SofortLib_Debit extends SofortLib_Abstract {
 	 * @param String $bankCode bank code of bank
 	 * @param String $accountNumber account number
 	 * @param String $holder Name/Holder of this account
-	 * @return SofortLib_Debit $this
+	 * @return SofortLibDebit $this
 	 */
 	public function setSenderAccount($bankCode, $accountNumber, $holder) {
 		$this->_parameters['sl']['sender'] = array(
@@ -97,7 +100,7 @@ class SofortLib_Debit extends SofortLib_Abstract {
 	 * set data of account
 	 *
 	 * @param String $accountNumber account number
-	 * @return SofortLib_Debit $this
+	 * @return SofortLibDebit $this
 	 */
 	public function setSenderAccountNumber($accountNumber) {
 		$this->_parameters['sl']['sender']['account_number'] = $accountNumber;
@@ -109,7 +112,7 @@ class SofortLib_Debit extends SofortLib_Abstract {
 	 * set data of account
 	 *
 	 * @param String $bankCode bank code of bank
-	 * @return SofortLib_Debit $this
+	 * @return SofortLibDebit $this
 	 */
 	public function setSenderBankCode($bankCode) {
 		$this->_parameters['sl']['sender']['bank_code'] = $bankCode;
@@ -121,7 +124,7 @@ class SofortLib_Debit extends SofortLib_Abstract {
 	 * set data of account
 	 *
 	 * @param String $name Name/Holder of this account
-	 * @return SofortLib_Debit $this
+	 * @return SofortLibDebit $this
 	 */
 	public function setSenderHolder($name) {
 		$this->_parameters['sl']['sender']['holder'] = $name;
@@ -147,7 +150,7 @@ class SofortLib_Debit extends SofortLib_Abstract {
 	 * help you identify this transfer later
 	 *
 	 * @param String $userVariable max 255 characters
-	 * @return SofortLib_Debit $this
+	 * @return SofortLibDebit $this
 	 */
 	public function addUserVariable($userVariable) {
 		$this->_parameters['sl']['user_variables']['user_variable'][] = $userVariable;
@@ -160,7 +163,7 @@ class SofortLib_Debit extends SofortLib_Abstract {
 	 * only first two can be used, 27 characters each
 	 *
 	 * @param $reason string
-	 * @return SofortLib_Debit $this
+	 * @return SofortLibDebit $this
 	 */
 	public function addReason($reason) {
 		$this->_parameters['sl']['reasons']['reason'][] = $reason;
@@ -174,7 +177,7 @@ class SofortLib_Debit extends SofortLib_Abstract {
 	 *
 	 * @param $reason1
 	 * @param $reason2
-	 * @return SofortLib_Debit $this
+	 * @return SofortLibDebit $this
 	 */
 	public function setReason($reason1, $reason2 = '') {
 		$this->_parameters['sl']['reasons']['reason'][0] = $reason1;

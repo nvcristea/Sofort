@@ -1,4 +1,7 @@
 <?php
+
+namespace Sofort\Helper;
+
 /**
  *
  * Data object that encapsulates user's data

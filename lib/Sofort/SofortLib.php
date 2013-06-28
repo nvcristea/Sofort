@@ -1,4 +1,12 @@
 <?php
+
+namespace Sofort;
+
+use Sofort\SofortLibHttp;
+use Sofort\SofortLibLogger;
+use Sofort\Helper\XmlToArray;
+use Sofort\Helper\Elements\SofortHtmlTag;
+
 /**
  * @mainpage
  * Base class for SOFORT XML-Api
@@ -13,7 +21,7 @@
  * [http://www.gnu.org/licenses/gpl-2.0.html]
  *
  * $Date: 2012-11-23 17:15:47 +0100 (Fri, 23 Nov 2012) $
- * @version SofortLib 1.5.4  $Id: sofortLib.php 5773 2012-11-23 16:15:47Z dehn $
+ * @version SofortLib 1.5.4  $Id: SofortLib.php 5773 2012-11-23 16:15:47Z dehn $
  * @author SOFORT AG http://www.sofort.com (integration@sofort.com)
  *
  */
@@ -21,29 +29,6 @@
 if(!defined('SOFORTLIB_VERSION')) {
 	define('SOFORTLIB_VERSION','1.5.4');
 }
-
-require_once dirname(__FILE__) . '/sofortLib_abstract.inc.php';
-require_once dirname(__FILE__) . '/sofortLib_confirm_sr.inc.php';
-require_once dirname(__FILE__) . '/sofortLib_edit_sr.inc.php';
-require_once dirname(__FILE__) . '/sofortLib_cancel_sr.inc.php';
-require_once dirname(__FILE__) . '/sofortLib_ideal_banks.inc.php';
-require_once dirname(__FILE__) . '/sofortLib_debit.inc.php';
-require_once dirname(__FILE__) . '/sofortLib_http.inc.php';
-require_once dirname(__FILE__) . '/sofortLib_multipay.inc.php';
-require_once dirname(__FILE__) . '/sofortLib_notification.inc.php';
-require_once dirname(__FILE__) . '/sofortLib_refund.inc.php';
-require_once dirname(__FILE__) . '/sofortLib_transaction_data.inc.php';
-require_once dirname(__FILE__) . '/sofortLib_Logger.inc.php';
-
-/** Include any available helper here **/
-require_once dirname(__FILE__) . '/helper/class.abstract_document.inc.php';
-require_once dirname(__FILE__) . '/helper/class.invoice.inc.php';
-require_once dirname(__FILE__) . '/helper/elements/sofort_element.php';
-require_once dirname(__FILE__) . '/helper/elements/sofort_tag.php';
-require_once dirname(__FILE__) . '/helper/elements/sofort_html_tag.php';
-require_once dirname(__FILE__) . '/helper/elements/sofort_text.php';
-require_once dirname(__FILE__) . '/helper/array_to_xml.php';
-require_once dirname(__FILE__) . '/helper/xml_to_array.php';
 
 
 /**
@@ -86,7 +71,7 @@ class SofortLib {
 	public function __construct($userId = '', $apiKey = '', $apiUrl = '') {
 		$this->_userId = $userId;
 		$this->_apiKey = $apiKey;
-		$this->SofortLibHttp = new SofortLib_Http($apiUrl, $this->_getHeaders());
+		$this->SofortLibHttp = new SofortLibHttp($apiUrl, $this->_getHeaders());
 		$this->SofortLibLogger = new SofortLibLogger();
 		$this->enableLogging = (getenv('sofortDebug') == 'true') ? true : false;
 	}

@@ -1,4 +1,7 @@
 <?php
+
+namespace Sofort;
+
 /**
  * Instance of this class handles the callback of SOFORT to notify about a status change, the classic way to do so
  *
@@ -8,11 +11,11 @@
  * [http://www.gnu.org/licenses/gpl-2.0.html]
  *
  * $Date: 2012-11-30 12:10:48 +0100 (Fri, 30 Nov 2012) $
- * @version SofortLib 1.5.4  $Id: sofortLib_classic_notification.inc.php 5809 2012-11-30 11:10:48Z rotsch $
+ * @version SofortLib 1.5.4  $Id: SofortLibClassicNotification.php 5809 2012-11-30 11:10:48Z rotsch $
  * @author SOFORT AG http://www.sofort.com (integration@sofort.com)
  *
  */
-class SofortLib_ClassicNotification {
+class SofortLibClassicNotification {
 	
 	public $params = array();
 	
@@ -31,7 +34,7 @@ class SofortLib_ClassicNotification {
 	
 	/**
 	 *
-	 * Constructor for SofortLib_ClassicNotification
+	 * Constructor for SofortLibClassicNotification
 	 * @param int $userId
 	 * @param int $projectId
 	 * @param string $password

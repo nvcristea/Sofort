@@ -1,5 +1,7 @@
 <?php
 
+namespace Sofort\Helper;
+
 /**
  * 
  * XML To Array Node

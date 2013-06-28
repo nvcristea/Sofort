@@ -1,8 +1,11 @@
 <?php
+
+namespace Sofort;
+
 /**
  * This class is for confirming and changing statuses of invoices
  *
- * eg: $confirmObj = new SofortLib_CancelSr('yourapikey');
+ * eg: $confirmObj = new SofortLibCancelSr('yourapikey');
  *
  * $confirmObj->confirmInvoice('1234-456-789654-31321')->sendRequest();
  *
@@ -12,11 +15,11 @@
  * [http://www.gnu.org/licenses/gpl-2.0.html]
  *
  * $Date: 2012-05-21 16:53:26 +0200 (Mo, 21 Mai 2012) $
- * @version SofortLib 1.5.4  $Id: sofortLib_cancel_sr.inc.php 4191 2012-05-21 14:53:26Z niehoff $
+ * @version SofortLib 1.5.4  $Id: SofortLibCancelSr.php 4191 2012-05-21 14:53:26Z niehoff $
  * @author SOFORT AG http://www.sofort.com (integration@sofort.com)
  *
  */
-class SofortLib_CancelSr extends SofortLib_Abstract {
+class SofortLibCancelSr extends SofortLibAbstract {
 	
 	protected $_apiVersion = '1.0';
 	
@@ -44,7 +47,7 @@ class SofortLib_CancelSr extends SofortLib_Abstract {
 	/**
 	 * Set the transaction you want to confirm/change
 	 * @param String $transaction Transaction Id
-	 * @return SofortLib_ConfirmSr
+	 * @return SofortLibConfirmSr
 	 */
 	public function setTransaction($transaction, $invoice = 0) {
 		$this->_parameters['invoice'][$invoice]['transaction'] = $transaction;
@@ -77,7 +80,7 @@ class SofortLib_CancelSr extends SofortLib_Abstract {
 	/**
 	 * cancel the invoice
 	 * @param string $transaction the transaction id
-	 * @return SofortLib_ConfirmSr
+	 * @return SofortLibConfirmSr
 	 */
 	public function cancelInvoice($transaction = '', $invoice = 0) {
 		if (empty($transaction) && array_key_exists('transaction', $this->_parameters)) {
@@ -107,7 +110,7 @@ class SofortLib_CancelSr extends SofortLib_Abstract {
 	/**
 	 * Parse the XML (override)
 	 * (non-PHPdoc)
-	 * @see SofortLib_Abstract::_parseXml()
+	 * @see SofortLibAbstract::_parseXml()
 	 */
 	protected function _parseXml() {
 		$this->_file = isset($this->_response['invoice']['download_url']['@data']) ? $this->_response['invoice']['download_url']['@data'] : '';

@@ -1,4 +1,7 @@
 <?php
+
+namespace Sofort;
+
 /// \cond
 /**
  * A basic implementation of logging mechanism intended for debugging
@@ -9,7 +12,7 @@
  * [http://www.gnu.org/licenses/gpl-2.0.html]
  *
  * $Date: 2012-11-23 11:34:40 +0100 (Fri, 23 Nov 2012) $
- * @version SofortLib 1.5.4  $Id: sofortLib_Logger.inc.php 5748 2012-11-23 10:34:40Z Niehoff $
+ * @version SofortLib 1.5.4  $Id: SofortLibLogger.php 5748 2012-11-23 10:34:40Z Niehoff $
  * @author SOFORT AG http://www.sofort.com (integration@sofort.com)
  *
  */

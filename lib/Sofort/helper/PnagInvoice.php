@@ -1,4 +1,13 @@
 <?php
+
+namespace Sofort\Helper;
+
+use Sofort\SofortLibMultipay;
+use Sofort\SofortLibTransactionData;
+use Sofort\SofortLibConfirmSr;
+use Sofort\SofortLibEditSr;
+use Sofort\SofortLibCancelSr;
+
 /**
  * Copyright (c) 2012 SOFORT AG
  *
@@ -6,7 +15,7 @@
  * [http://www.gnu.org/licenses/gpl-2.0.html]
  *
  * $Date: 2012-11-23 17:15:47 +0100 (Fri, 23 Nov 2012) $
- * @version $Id: class.invoice.inc.php 5773 2012-11-23 16:15:47Z dehn $
+ * @version $Id: PnagInvoice.php 5773 2012-11-23 16:15:47Z dehn $
  * @package sofortLib
  * @author SOFORT AG http://www.sofort.com (integration@sofort.com)
  *
@@ -16,9 +25,9 @@
  * Abstraction of an invoice
  * Helper class to ease usage of "Rechnung by sofort"
  * Encapsulates Multipay, TransactionData and ConfirmSr to handle everything there is about "Rechnung by sofort"
- * @see SofortLib_Multipay
- * @see SofortLib_TransactionData
- * @see SofortLib_ConfirmSr
+ * @see SofortLibMultipay
+ * @see SofortLibTransactionData
+ * @see SofortLibConfirmSr
  */
 
 class PnagInvoice extends PnagAbstractDocument {
@@ -59,14 +68,14 @@ class PnagInvoice extends PnagAbstractDocument {
 	 * @var object
 	 * @private
 	 */
-	public $SofortLib_Multipay = null;
+	public $SofortLibMultipay = null;
 	
 	/**
 	 * Object TransactionData to handle information about transactions
 	 * @var object
 	 * @private
 	 */
-	public $SofortLib_TransactionData = null;
+	public $SofortLibTransactionData = null;
 	
 	/**
 	 * Object Confirm_SR to handle sofortrechnung/rechnung by sofort items
@@ -216,10 +225,10 @@ class PnagInvoice extends PnagAbstractDocument {
 		$this->_transactionId = $transactionId;
 		$this->_configKey = $configKey;
 		$this->_apiUrl = (getenv('sofortApiUrl') != '') ? getenv('sofortApiUrl') : 'https://api.sofort.com/api/xml';
-		$this->SofortLib_Multipay = new SofortLib_Multipay($this->_configKey, $this->_apiUrl);
+		$this->SofortLibMultipay = new SofortLibMultipay($this->_configKey, $this->_apiUrl);
 		
 		if ($transactionId != '') {
-			$this->SofortLib_TransactionData = $this->_setupTransactionData();
+			$this->SofortLibTransactionData = $this->_setupTransactionData();
 			$this->ConfirmSr = $this->_setupConfirmSr();
 		}
 		
@@ -303,40 +312,40 @@ class PnagInvoice extends PnagAbstractDocument {
 	 */
 	public function setTransactionId($transactionId) {
 		$this->_transactionId = $transactionId;
-		$this->SofortLib_TransactionData = $this->_setupTransactionData();
+		$this->SofortLibTransactionData = $this->_setupTransactionData();
 		$this->ConfirmSr = $this->_setupConfirmSr();
 		return $this;
 	}
 	
 	
 	/**
-	 * Construct the SofortLib_TransactionData object
+	 * Construct the SofortLibTransactionData object
 	 * Collect every order's item and set it accordingly
 	 * TransactionData is used encapsulated in this class to retrieve information about the order's details
-	 * @return object SofortLib_TransactionData
+	 * @return object SofortLibTransactionData
 	 * @private
 	 */
 	private function _setupTransactionData() {
-		$SofortLib_TransactionData = new SofortLib_TransactionData($this->_configKey, $this->_apiUrl);
-		$SofortLib_TransactionData->setTransaction($this->_transactionId);
-		$SofortLib_TransactionData->sendRequest();
+		$SofortLibTransactionData = new SofortLibTransactionData($this->_configKey, $this->_apiUrl);
+		$SofortLibTransactionData->setTransaction($this->_transactionId);
+		$SofortLibTransactionData->sendRequest();
 		
-		if (!$SofortLib_TransactionData->getCount()) {
+		if (!$SofortLibTransactionData->getCount()) {
 			return false;
 		}
 		
-		$this->setStatus($SofortLib_TransactionData->getStatus());
-		$this->setStatusReason($SofortLib_TransactionData->getStatusReason());
-		$this->setStatusOfInvoice($SofortLib_TransactionData->getInvoiceStatus());
-		$this->setInvoiceObjection($SofortLib_TransactionData->getInvoiceObjection());
-		$this->setLanguageCode($SofortLib_TransactionData->getLanguageCode());
+		$this->setStatus($SofortLibTransactionData->getStatus());
+		$this->setStatusReason($SofortLibTransactionData->getStatusReason());
+		$this->setStatusOfInvoice($SofortLibTransactionData->getInvoiceStatus());
+		$this->setInvoiceObjection($SofortLibTransactionData->getInvoiceObjection());
+		$this->setLanguageCode($SofortLibTransactionData->getLanguageCode());
 		$this->setTransaction($this->getTransactionId());
-		$this->setTime($SofortLib_TransactionData->getTime());
-		$this->setPaymentMethod($SofortLib_TransactionData->getPaymentMethod());
-		$this->setInvoiceUrl($SofortLib_TransactionData->getInvoiceUrl());
-		$this->setAmount($SofortLib_TransactionData->getAmount());
-		$this->setAmountRefunded($SofortLib_TransactionData->getAmountRefunded());
-		$itemArray = $SofortLib_TransactionData->getItems();
+		$this->setTime($SofortLibTransactionData->getTime());
+		$this->setPaymentMethod($SofortLibTransactionData->getPaymentMethod());
+		$this->setInvoiceUrl($SofortLibTransactionData->getInvoiceUrl());
+		$this->setAmount($SofortLibTransactionData->getAmount());
+		$this->setAmountRefunded($SofortLibTransactionData->getAmountRefunded());
+		$itemArray = $SofortLibTransactionData->getItems();
 		
 		// should there be any items, fetch them accordingly
 		$this->_items = array();
@@ -352,59 +361,59 @@ class PnagInvoice extends PnagAbstractDocument {
 		 * @see $statusMask
 		 */
 		$this->setState($this->_calcInvoiceStatusCode());
-		return $SofortLib_TransactionData;
+		return $SofortLibTransactionData;
 	}
 	
 	
 	/**
 	 * 
-	 * Setter for SofortLib_Multipay
-	 * @param object $SofortLib_Multipay
+	 * Setter for SofortLibMultipay
+	 * @param object $SofortLibMultipay
 	 */
-	public function setSofortLibMultipay($SofortLib_Multipay) {
-		$this->SofortLib_Multipay = $SofortLib_Multipay;
+	public function setSofortLibMultipay($SofortLibMultipay) {
+		$this->SofortLibMultipay = $SofortLibMultipay;
 	}
 	
 	
 	/**
 	 * 
-	 * Setter for SofortLib_TransactionData
-	 * @param object $SofortLib_TransactionData
+	 * Setter for SofortLibTransactionData
+	 * @param object $SofortLibTransactionData
 	 */
-	public function setSofortLibTransactionData($SofortLib_TransactionData) {
-		$this->SofortLib_TransactionData = $SofortLib_TransactionData;
+	public function setSofortLibTransactionData($SofortLibTransactionData) {
+		$this->SofortLibTransactionData = $SofortLibTransactionData;
 	}
 	
 	
 	/**
 	 * 
-	 * Setter for SofortLib_EditSr
-	 * @param object $SofortLib_EditSr
+	 * Setter for SofortLibEditSr
+	 * @param object $SofortLibEditSr
 	 */
-	public function setSofortLibEditSr($SofortLib_EditSr) {
-		$this->EditSr = $SofortLib_EditSr;
+	public function setSofortLibEditSr($SofortLibEditSr) {
+		$this->EditSr = $SofortLibEditSr;
 	}
 	
 	
 	/**
 	 * 
-	 * Setter for SofortLib_CancelSr
-	 * @param object $SofortLib_CancelSr
+	 * Setter for SofortLibCancelSr
+	 * @param object $SofortLibCancelSr
 	 */
-	public function setSofortLibCancelSr($SofortLib_CancelSr) {
-		$this->CancelSr = $SofortLib_CancelSr;
+	public function setSofortLibCancelSr($SofortLibCancelSr) {
+		$this->CancelSr = $SofortLibCancelSr;
 	}
 	
 	
 	/**
-	 * Initialize SofortLib_ConfirmSR
+	 * Initialize SofortLibConfirmSr
 	 * @private
-	 * @return Object SofortLib_ConfirmSr
+	 * @return Object SofortLibConfirmSr
 	 */
 	private function _setupConfirmSr() {
-		$SofortLib_ConfirmSr = new SofortLib_ConfirmSr($this->_configKey);
-		$SofortLib_ConfirmSr->setTransaction($this->_transactionId);
-		return $SofortLib_ConfirmSr;
+		$SofortLibConfirmSr = new SofortLibConfirmSr($this->_configKey);
+		$SofortLibConfirmSr->setTransaction($this->_transactionId);
+		return $SofortLibConfirmSr;
 	}
 	
 	
@@ -413,9 +422,9 @@ class PnagInvoice extends PnagAbstractDocument {
 	 * Setup EditSr object
 	 */
 	private function _setupEditSr() {
-		$SofortLib_EditSr = new SofortLib_EditSr($this->_configKey);
-		$SofortLib_EditSr->setTransaction($this->_transactionId);
-		return $SofortLib_EditSr;
+		$SofortLibEditSr = new SofortLibEditSr($this->_configKey);
+		$SofortLibEditSr->setTransaction($this->_transactionId);
+		return $SofortLibEditSr;
 	}
 	
 	
@@ -424,9 +433,9 @@ class PnagInvoice extends PnagAbstractDocument {
 	 * Setup CancelSr object
 	 */
 	private function _setupCancelSr() {
-		$SofortLib_CancelSr = new SofortLib_CancelSr($this->_configKey);
-		$SofortLib_CancelSr->setTransaction($this->_transactionId);
-		return $SofortLib_CancelSr;
+		$SofortLibCancelSr = new SofortLibCancelSr($this->_configKey);
+		$SofortLibCancelSr->setTransaction($this->_transactionId);
+		return $SofortLibCancelSr;
 	}
 	
 	
@@ -435,13 +444,13 @@ class PnagInvoice extends PnagAbstractDocument {
 	 * @return boolean
 	 */
 	public function refreshTransactionData() {
-		$this->SofortLib_TransactionData = $this->_setupTransactionData();
+		$this->SofortLibTransactionData = $this->_setupTransactionData();
 		return true;
 	}
 	
 	
 	/**
-	 * Wrapper function for cancelling this invoice via SofortLib_Multipay (SofortLib)
+	 * Wrapper function for cancelling this invoice via SofortLibMultipay (SofortLib)
 	 * @return Ambigious boolean/Array
 	 * @todo fix returned value array, empty array
 	 * @public
@@ -458,7 +467,7 @@ class PnagInvoice extends PnagAbstractDocument {
 			$this->CancelSr->setComment('Vollstorno');
 			$creditNoteNumber && $this->CancelSr->setCreditNoteNumber($creditNoteNumber);
 			$this->CancelSr->sendRequest();
-			$this->SofortLib_TransactionData = $this->_setupTransactionData();
+			$this->SofortLibTransactionData = $this->_setupTransactionData();
 			return $this->getErrors();
 		}
 		
@@ -467,7 +476,7 @@ class PnagInvoice extends PnagAbstractDocument {
 	
 	
 	/**
-	 * Wrapper function for confirming this invoice via SofortLib_Multipay (SofortLib)
+	 * Wrapper function for confirming this invoice via SofortLibMultipay (SofortLib)
 	 * @param $transactionId - optional parameter for confirming a transaction on the fly
 	 * @param $invoiceNumer - optional parameter for own invoice number
 	 * @param $customerNumber - optional parameter for own customer number
@@ -489,7 +498,7 @@ class PnagInvoice extends PnagAbstractDocument {
 			$orderNumber && $this->ConfirmSr->setOrderNumber($orderNumber);
 			$this->ConfirmSr->setApiVersion('2.0');
 			$this->ConfirmSr->sendRequest();
-			$this->SofortLib_TransactionData = $this->_setupTransactionData();
+			$this->SofortLibTransactionData = $this->_setupTransactionData();
 			return $this->getErrors();
 		}
 		
@@ -498,7 +507,7 @@ class PnagInvoice extends PnagAbstractDocument {
 	
 	
 	/**
-	 * Wrapper function for removing an article via SofortLib_Multipay (SofortLib)
+	 * Wrapper function for removing an article via SofortLibMultipay (SofortLib)
 	 * @param $transactionId string
 	 * @param $PnagArticels array
 	 * @param $comment int
@@ -518,7 +527,7 @@ class PnagInvoice extends PnagAbstractDocument {
 			$orderNumber && $this->EditSr->setOrderNumber($orderNumber);
 			$this->EditSr->updateCart($items);
 			$this->EditSr->sendRequest();
-			$this->SofortLib_TransactionData = $this->_setupTransactionData();
+			$this->SofortLibTransactionData = $this->_setupTransactionData();
 			return $this->getErrors();
 		}
 		
@@ -545,13 +554,13 @@ class PnagInvoice extends PnagAbstractDocument {
 	
 	/* ########################## WRAPPER FUNCTIONS MULTIPAY ########################## */
 	/**
-	 * Wrapper for SofortLib_Multipay::addSofortrechnungItem
-	 * @see SofortLib_Multipay
+	 * Wrapper for SofortLibMultipay::addSofortrechnungItem
+	 * @see SofortLibMultipay
 	 * @public
 	 * @param $itemId
 	 * @param $productNumber
 	 * @param $title
-	 * @param $unit_price - float precision 2 @see SofortLib_Multipay api
+	 * @param $unit_price - float precision 2 @see SofortLibMultipay api
 	 * @param $productType
 	 * @param $description
 	 * @param $quantity - int
@@ -559,7 +568,7 @@ class PnagInvoice extends PnagAbstractDocument {
 	 */
 	public function addItemToInvoice($itemId, $productNumber, $title, $unitPrice, $productType = 0, $description = '', $quantity = 1, $tax = 19) {
 		$unitPrice = round($unitPrice, 2);	// round all prices to two decimals
-		$this->SofortLib_Multipay->addSofortrechnungItem($itemId, $productNumber, $title, $unitPrice, $productType, $description, $quantity, $tax);
+		$this->SofortLibMultipay->addSofortrechnungItem($itemId, $productNumber, $title, $unitPrice, $productType, $description, $quantity, $tax);
 		$this->setItem($itemId, $productNumber, $productType, $title, $description, $quantity, $unitPrice, $tax);
 		$this->_amount += ($quantity * $unitPrice);
 		$this->setAmount($this->_amount, $this->_currency);
@@ -581,7 +590,7 @@ class PnagInvoice extends PnagAbstractDocument {
 				// TODO: remove item
 				//unset($this->_items[$i]);
 				$this->setAmount($this->getAmount() - $this->getItemAmount($itemId));
-				$return = $this->SofortLib_Multipay->removeSofortrechnungItem($itemId);
+				$return = $this->SofortLibMultipay->removeSofortrechnungItem($itemId);
 			}
 			
 			$i++;
@@ -607,7 +616,7 @@ class PnagInvoice extends PnagAbstractDocument {
 				$item->quantity = $quantity;
 				$newPrice = $unitPrice * $quantity;
 				$this->setAmount($this->getAmount() - $oldPrice + $newPrice);
-				$return = $this->SofortLib_Multipay->updateSofortrechnungItem($itemId, $quantity, $unitPrice);
+				$return = $this->SofortLibMultipay->updateSofortrechnungItem($itemId, $quantity, $unitPrice);
 			}
 		}
 		
@@ -621,13 +630,13 @@ class PnagInvoice extends PnagAbstractDocument {
 	 * @param string $itemId
 	 */
 	public function getItemAmount($itemId) {
-		return $this->SofortLib_Multipay->getSofortrechnungItemAmount($itemId);
+		return $this->SofortLibMultipay->getSofortrechnungItemAmount($itemId);
 	}
 	
 	
 	/**
-	 * Wrapper for SofortLib_Multipay::setSofortrechnungShippingAddress
-	 * @see SofortLib_Multipay
+	 * Wrapper for SofortLibMultipay::setSofortrechnungShippingAddress
+	 * @see SofortLibMultipay
 	 * @public
 	 * @param $firstname
 	 * @param $lastname
@@ -642,13 +651,13 @@ class PnagInvoice extends PnagAbstractDocument {
 	 * @param $companyName (optional)
 	 */
 	public function addShippingAddress($firstname, $lastname, $street, $streetNumber, $zipcode, $city, $salutation, $country = 'DE', $nameAdditive = '', $streetAdditive = '', $companyName = '') {
-		$this->SofortLib_Multipay->setSofortrechnungShippingAddress($firstname, $lastname, $street, $streetNumber, $zipcode, $city, $salutation, $country, $nameAdditive, $streetAdditive, $companyName);
+		$this->SofortLibMultipay->setSofortrechnungShippingAddress($firstname, $lastname, $street, $streetNumber, $zipcode, $city, $salutation, $country, $nameAdditive, $streetAdditive, $companyName);
 	}
 	
 	
 	/**
-	 * Wrapper for SofortLib_Multipay::setSofortrechnungShippingAddress
-	 * @see SofortLib_Multipay
+	 * Wrapper for SofortLibMultipay::setSofortrechnungShippingAddress
+	 * @see SofortLibMultipay
 	 * @public
 	 * @param $firstname
 	 * @param $lastname
@@ -663,13 +672,13 @@ class PnagInvoice extends PnagAbstractDocument {
 	 * @deprecated
 	 */
 	public function addShippingAddresss($firstname, $lastname, $street, $streetNumber, $zipcode, $city, $salutation, $country = 'DE', $nameAdditive = '', $streetAdditive = '') {
-		$this->SofortLib_Multipay->setSofortrechnungShippingAddress($firstname, $lastname, $street, $streetNumber, $zipcode, $city, $salutation, $country, $nameAdditive, $streetAdditive);
+		$this->SofortLibMultipay->setSofortrechnungShippingAddress($firstname, $lastname, $street, $streetNumber, $zipcode, $city, $salutation, $country, $nameAdditive, $streetAdditive);
 	}
 	
 	
 	/**
-	 * Wrapper for SofortLib_Multipay::setSofortrechnungInvoiceAddress
-	 * @see SofortLib_Multipay
+	 * Wrapper for SofortLibMultipay::setSofortrechnungInvoiceAddress
+	 * @see SofortLibMultipay
 	 * @public
 	 * @param $firstname
 	 * @param $lastname
@@ -684,130 +693,130 @@ class PnagInvoice extends PnagAbstractDocument {
 	 * @param $companyName (optional)
 	 */
 	public function addInvoiceAddress($firstname, $lastname, $street, $streetNumber, $zipcode, $city, $salutation, $country = 'DE', $nameAdditive = '', $streetAdditive = '', $companyName = '') {
-		$this->SofortLib_Multipay->setSofortrechnungInvoiceAddress($firstname, $lastname, $street, $streetNumber, $zipcode, $city, $salutation, $country, $nameAdditive, $streetAdditive, $companyName);
+		$this->SofortLibMultipay->setSofortrechnungInvoiceAddress($firstname, $lastname, $street, $streetNumber, $zipcode, $city, $salutation, $country, $nameAdditive, $streetAdditive, $companyName);
 	}
 	
 	
 	/**
-	 * Wrapper function for SofortLib_Multipay::setSofortrechnungOrderId
-	 * @see SofortLib_Multipay
+	 * Wrapper function for SofortLibMultipay::setSofortrechnungOrderId
+	 * @see SofortLibMultipay
 	 * @public
 	 * @param $arg
 	 */
 	public function setOrderId($arg) {
-		$this->SofortLib_Multipay->setSofortrechnungOrderId($arg);
+		$this->SofortLibMultipay->setSofortrechnungOrderId($arg);
 	}
 	
 	
 	/**
-	 * Wrapper function for SofortLib_Multipay::setSofortrechnungCustomerId
+	 * Wrapper function for SofortLibMultipay::setSofortrechnungCustomerId
 	 * @public
 	 * @param $arg
 	 */
 	public function setCustomerId($arg) {
-		$this->SofortLib_Multipay->setSofortrechnungCustomerId($arg);
+		$this->SofortLibMultipay->setSofortrechnungCustomerId($arg);
 	}
 	
 	
 	/**
-	 * Wrapper function for SofortLib_Multipay::setPhoneNumberCustomer
+	 * Wrapper function for SofortLibMultipay::setPhoneNumberCustomer
 	 * @public
 	 * @param $arg
 	 */
 	public function setPhoneNumberCustomer($arg) {
-		$this->SofortLib_Multipay->setPhoneNumberCustomer($arg);
+		$this->SofortLibMultipay->setPhoneNumberCustomer($arg);
 	}
 	
 	
 	/**
-	 * Wrapper function for SofortLib_Multipay::setEmailCustomer
+	 * Wrapper function for SofortLibMultipay::setEmailCustomer
 	 * @public
 	 * @param $arg
 	 */
 	public function setEmailCustomer($arg) {
-		$this->SofortLib_Multipay->setEmailCustomer($arg);
+		$this->SofortLibMultipay->setEmailCustomer($arg);
 	}
 	
 	
 	/**
-	 * Wrapper function for SofortLib_Multipay::addUserVariable
+	 * Wrapper function for SofortLibMultipay::addUserVariable
 	 * @public
 	 * @param $arg
 	 */
 	public function addUserVariable($arg) {
-		$this->SofortLib_Multipay->addUserVariable($arg);
+		$this->SofortLibMultipay->addUserVariable($arg);
 	}
 	
 	
 	/**
-	 * Wrapper function for SofortLib_Multipay::setNotificationUrl
+	 * Wrapper function for SofortLibMultipay::setNotificationUrl
 	 * @public
 	 * @param $arg
 	 */
 	public function setNotificationUrl($arg) {
-		$this->SofortLib_Multipay->setNotificationUrl($arg);
+		$this->SofortLibMultipay->setNotificationUrl($arg);
 	}
 	
 	
 	/**
-	 * Wrapper function for SofortLib_Multipay::setAbortUrl
+	 * Wrapper function for SofortLibMultipay::setAbortUrl
 	 * @public
 	 * @param $arg
 	 */
 	public function setAbortUrl($arg) {
-		$this->SofortLib_Multipay->setAbortUrl($arg);
+		$this->SofortLibMultipay->setAbortUrl($arg);
 	}
 	
 	
 	/**
-	 * Wrapper function for SofortLib_Multipay::setSuccessUrl
+	 * Wrapper function for SofortLibMultipay::setSuccessUrl
 	 * @public
 	 * @param $arg
 	 */
 	public function setSuccessUrl($arg) {
-		$this->SofortLib_Multipay->setSuccessUrl($arg);
+		$this->SofortLibMultipay->setSuccessUrl($arg);
 	}
 	
 	
 	/**
-	 * Wrapper function for SofortLib_Multipay::setTimeoutUrl
+	 * Wrapper function for SofortLibMultipay::setTimeoutUrl
 	 * @public
 	 * @param $arg
 	 */
 	public function setTimeoutUrl($arg) {
-		$this->SofortLib_Multipay->setTimeoutUrl($arg);
+		$this->SofortLibMultipay->setTimeoutUrl($arg);
 	}
 	
 	
 	/**
-	 * Wrapper function for SofortLib_Multipay::setTimeout
+	 * Wrapper function for SofortLibMultipay::setTimeout
 	 * @public
 	 * @param $arg
 	 */
 	public function setTimeout($arg) {
-		$this->SofortLib_Multipay->setTimeout($arg);
+		$this->SofortLibMultipay->setTimeout($arg);
 	}
 	
 	
 	/**
-	 * Wrapper function for SofortLib_Multipay::setReason
+	 * Wrapper function for SofortLibMultipay::setReason
 	 * @public
 	 * @param $reason1 string
 	 * @param $reason2 string
 	 */
 	public function setReason($reason1, $reason2 = '') {
-		$this->SofortLib_Multipay->setReason($reason1, $reason2);
+		$this->SofortLibMultipay->setReason($reason1, $reason2);
 	}
 	
 	
 	/**
-	 * Wrapper function for SofortLib_Multipay::setAmount
+	 * Wrapper function for SofortLibMultipay::setAmount
 	 * @public
 	 * @param $arg float
 	 * @param $currency string
 	 */
 	public function setAmount($arg, $currency = 'EUR') {
-		$this->SofortLib_Multipay->setAmount($arg, $currency);
+		$this->SofortLibMultipay->setAmount($arg, $currency);
 	}
 	
 	
@@ -816,8 +825,8 @@ class PnagInvoice extends PnagAbstractDocument {
 	 * @return float - sum (price, total) of all articles
 	 */
 	public function getAmount() {
-		if (isset($this->SofortLib_TransactionData) && $this->SofortLib_TransactionData instanceof  SofortLib_TransactionData) {
-			$amount = $this->SofortLib_TransactionData->getAmount();
+		if (isset($this->SofortLibTransactionData) && $this->SofortLibTransactionData instanceof  SofortLibTransactionData) {
+			$amount = $this->SofortLibTransactionData->getAmount();
 		} else {
 			$amount = $this->_amount;
 		}
@@ -852,30 +861,30 @@ class PnagInvoice extends PnagAbstractDocument {
 	
 	
 	/**
-	 * Wrapper function for SofortLib_Multipay::setSofortrechnung
+	 * Wrapper function for SofortLibMultipay::setSofortrechnung
 	 * @public
 	 */
 	public function setSofortrechnung() {
-		$this->SofortLib_Multipay->setSofortrechnung();
+		$this->SofortLibMultipay->setSofortrechnung();
 	}
 	
 	
 	/**
-	 * Wrapper function for SofortLib_Multipay::setDebitorVatNumber
+	 * Wrapper function for SofortLibMultipay::setDebitorVatNumber
 	 * @public
 	 */
 	public function setDebitorVatNumber($vatNumber) {
-		$this->SofortLib_Multipay->setDebitorVatNumber($vatNumber);
+		$this->SofortLibMultipay->setDebitorVatNumber($vatNumber);
 	}
 	
 	
 	/**
-	 * Wrapper function for SofortLib_Multipay::getPaymentUrl
+	 * Wrapper function for SofortLibMultipay::getPaymentUrl
 	 * @public
 	 * @return url string
 	 */
 	public function getPaymentUrl() {
-		return $this->SofortLib_Multipay->getPaymentUrl();
+		return $this->SofortLibMultipay->getPaymentUrl();
 	}
 	
 	
@@ -884,7 +893,7 @@ class PnagInvoice extends PnagAbstractDocument {
 	 * Getter for invoice's number
 	 */
 	public function getInvoiceNumber() {
-		return $this->SofortLib_TransactionData->getInvoiceNumber();
+		return $this->SofortLibTransactionData->getInvoiceNumber();
 	}
 	
 	
@@ -893,7 +902,7 @@ class PnagInvoice extends PnagAbstractDocument {
 	 * Getter for customer's number
 	 */
 	public function getCustomerNumber() {
-		return $this->SofortLib_TransactionData->getCustomerNumber();
+		return $this->SofortLibTransactionData->getCustomerNumber();
 	}
 	
 	
@@ -902,32 +911,32 @@ class PnagInvoice extends PnagAbstractDocument {
 	 * Getter for order's number
 	 */
 	public function getOrderNumber() {
-		if ($this->SofortLib_TransactionData instanceof SofortLib_TransactionData) {
-			return $this->SofortLib_TransactionData->getOrderNumber();
+		if ($this->SofortLibTransactionData instanceof SofortLibTransactionData) {
+			return $this->SofortLibTransactionData->getOrderNumber();
 		}
 		return false;
 	}
 	
 	
 	/**
-	 * Wrapper function for SofortLib_Multipay::geInvoiceType
+	 * Wrapper function for SofortLibMultipay::geInvoiceType
 	 * @public
 	 * @return (OR or LS)
 	 */
 	public function getInvoiceTye() {
-		return $this->SofortLib_TransactionData->getInvoiceType();
+		return $this->SofortLibTransactionData->getInvoiceType();
 	}
 	
 	
 	/**
-	 * Wrapper function for SofortLib_Multipay::getPaymentUrl
+	 * Wrapper function for SofortLibMultipay::getPaymentUrl
 	 * @public
 	 * @return url string
 	 */
 	public function getTransactionId() {
-		if ($this->SofortLib_Multipay instanceof SofortLib_Multipay && $transactionId = $this->SofortLib_Multipay->getTransactionId()) {
+		if ($this->SofortLibMultipay instanceof SofortLibMultipay && $transactionId = $this->SofortLibMultipay->getTransactionId()) {
 			return $transactionId;
-		} elseif ($this->SofortLib_TransactionData instanceof SofortLib_TransactionData && $transactionId = $this->SofortLib_TransactionData->getTransaction()) {
+		} elseif ($this->SofortLibTransactionData instanceof SofortLibTransactionData && $transactionId = $this->SofortLibTransactionData->getTransaction()) {
 			return $transactionId;
 		} else {
 			return $this->_transactionId;
@@ -942,7 +951,7 @@ class PnagInvoice extends PnagAbstractDocument {
 	 */
 	/*
 	public function validateRequest() {
-		$errorsAndWarnings = $this->SofortLib_Multipay->validateRequest('sr');
+		$errorsAndWarnings = $this->SofortLibMultipay->validateRequest('sr');
 		return $errorsAndWarnings;
 	}
 	*/
@@ -954,9 +963,9 @@ class PnagInvoice extends PnagAbstractDocument {
 	 * @public
 	 */
 	public function checkout() {
-		$this->SofortLib_Multipay->sendRequest();
-		$this->_transactionId = $this->SofortLib_Multipay->getTransactionId();	// set the resulting transaction id
-		$this->SofortLib_TransactionData = $this->_setupTransactionData();
+		$this->SofortLibMultipay->sendRequest();
+		$this->_transactionId = $this->SofortLibMultipay->getTransactionId();	// set the resulting transaction id
+		$this->SofortLibTransactionData = $this->_setupTransactionData();
 		
 		$errors = array();
 		
@@ -986,12 +995,12 @@ class PnagInvoice extends PnagAbstractDocument {
 	 * Getter for information about transaction
 	 */
 	public function getTransactionInfo() {
-		if (is_a($this->SofortLib_TransactionData, 'SofortLib')) {
-			$this->SofortLib_TransactionData->setTransaction($this->transactionId);
+		if (is_a($this->SofortLibTransactionData, 'SofortLib')) {
+			$this->SofortLibTransactionData->setTransaction($this->transactionId);
 			$this->sendRequest();
-			return $this->SofortLib_TransactionData;
+			return $this->SofortLibTransactionData;
 		} else {
-			$this->SofortLib_TransactionData = $this->_setupTransactionData();
+			$this->SofortLibTransactionData = $this->_setupTransactionData();
 		}
 		
 		return array();
@@ -1245,7 +1254,7 @@ class PnagInvoice extends PnagAbstractDocument {
 	 * @param $arg string
 	 */
 	public function setVersion($arg) {
-		$this->SofortLib_Multipay->setVersion($arg);
+		$this->SofortLibMultipay->setVersion($arg);
 	}
 	
 	
@@ -1393,8 +1402,8 @@ class PnagInvoice extends PnagAbstractDocument {
 	 * @see $this->refreshTransactionData();
 	 */
 	public function getTransactionData() {
-		if ($this->SofortLib_TransactionData) {
-			return $this->SofortLib_TransactionData;
+		if ($this->SofortLibTransactionData) {
+			return $this->SofortLibTransactionData;
 		} else {
 			return false;
 		}
@@ -1407,8 +1416,8 @@ class PnagInvoice extends PnagAbstractDocument {
 	 * @return boolean
 	 */
 	public function isError() {
-		if ($this->SofortLib_Multipay) {
-			if ($this->SofortLib_Multipay->isError('sr')) {
+		if ($this->SofortLibMultipay) {
+			if ($this->SofortLibMultipay->isError('sr')) {
 				return true;
 			}
 		}
@@ -1432,8 +1441,8 @@ class PnagInvoice extends PnagAbstractDocument {
 		}
 		
 		
-		if ($this->SofortLib_TransactionData) {
-			if ($this->SofortLib_TransactionData->isError('sr')) {
+		if ($this->SofortLibTransactionData) {
+			if ($this->SofortLibTransactionData->isError('sr')) {
 				return true;
 			}
 		}
@@ -1448,8 +1457,8 @@ class PnagInvoice extends PnagAbstractDocument {
 	 * @return boolean
 	 */
 	public function isWarning() {
-		if ($this->SofortLib_Multipay) {
-			if ($this->SofortLib_Multipay->isWarning('sr')) {
+		if ($this->SofortLibMultipay) {
+			if ($this->SofortLibMultipay->isWarning('sr')) {
 				return true;
 			}
 		}
@@ -1472,8 +1481,8 @@ class PnagInvoice extends PnagAbstractDocument {
 			}
 		}
 		
-		if ($this->SofortLib_TransactionData) {
-			if ($this->SofortLib_TransactionData->isWarning('sr')) {
+		if ($this->SofortLibTransactionData) {
+			if ($this->SofortLibTransactionData->isWarning('sr')) {
 				return true;
 			}
 		}
@@ -1486,9 +1495,9 @@ class PnagInvoice extends PnagAbstractDocument {
 	 * returns one error (as String!)
 	 */
 	public function getError() {
-		if ($this->SofortLib_Multipay) {
-			if ($this->SofortLib_Multipay->isError('sr')) {
-				return $this->SofortLib_Multipay->getError('sr');
+		if ($this->SofortLibMultipay) {
+			if ($this->SofortLibMultipay->isError('sr')) {
+				return $this->SofortLibMultipay->getError('sr');
 			}
 		}
 		
@@ -1510,9 +1519,9 @@ class PnagInvoice extends PnagAbstractDocument {
 			}
 		}
 		
-		if ($this->SofortLib_TransactionData) {
-			if ($this->SofortLib_TransactionData->isError('sr')) {
-				return $this->SofortLib_TransactionData->getError('sr');
+		if ($this->SofortLibTransactionData) {
+			if ($this->SofortLibTransactionData->isError('sr')) {
+				return $this->SofortLibTransactionData->getError('sr');
 			}
 		}
 		
@@ -1528,9 +1537,9 @@ class PnagInvoice extends PnagAbstractDocument {
 	public function getErrors() {
 		$allErrors = array();
 		
-		if ($this->SofortLib_Multipay) {
-			if ($this->SofortLib_Multipay->isError('sr')) {
-				$allErrors = array_merge($this->SofortLib_Multipay->getErrors('sr'), $allErrors);
+		if ($this->SofortLibMultipay) {
+			if ($this->SofortLibMultipay->isError('sr')) {
+				$allErrors = array_merge($this->SofortLibMultipay->getErrors('sr'), $allErrors);
 			}
 		}
 		
@@ -1552,9 +1561,9 @@ class PnagInvoice extends PnagAbstractDocument {
 			}
 		}
 		
-		if ($this->SofortLib_TransactionData) {
-			if ($this->SofortLib_TransactionData->isError('sr')) {
-				$allErrors = array_merge($this->SofortLib_TransactionData->getErrors('sr'), $allErrors);
+		if ($this->SofortLibTransactionData) {
+			if ($this->SofortLibTransactionData->isError('sr')) {
+				$allErrors = array_merge($this->SofortLibTransactionData->getErrors('sr'), $allErrors);
 			}
 		}
 		
@@ -1602,9 +1611,9 @@ class PnagInvoice extends PnagAbstractDocument {
 	public function getWarnings() {
 		$allWarnings = array();
 		
-		if ($this->SofortLib_Multipay) {
-			if ($this->SofortLib_Multipay->isWarning('sr')) {
-				$allWarnings = array_merge($this->SofortLib_Multipay->getWarnings('sr'), $allWarnings);
+		if ($this->SofortLibMultipay) {
+			if ($this->SofortLibMultipay->isWarning('sr')) {
+				$allWarnings = array_merge($this->SofortLibMultipay->getWarnings('sr'), $allWarnings);
 			}
 		}
 		
@@ -1626,9 +1635,9 @@ class PnagInvoice extends PnagAbstractDocument {
 			}
 		}
 		
-		if ($this->SofortLib_TransactionData) {
-			if ($this->SofortLib_TransactionData->isWarning('sr')) {
-				$allWarnings = array_merge($this->SofortLib_TransactionData->getWarnings('sr'), $allWarnings);
+		if ($this->SofortLibTransactionData) {
+			if ($this->SofortLibTransactionData->isWarning('sr')) {
+				$allWarnings = array_merge($this->SofortLibTransactionData->getWarnings('sr'), $allWarnings);
 			}
 		}
 		
@@ -1642,8 +1651,8 @@ class PnagInvoice extends PnagAbstractDocument {
 	 * @return boolean
 	 */
 	public function enableLog() {
-		(is_a($this->SofortLib_Multipay, 'SofortLib')) ? $this->SofortLib_Multipay->setLogEnabled() : '';
-		(is_a($this->SofortLib_TransactionData, 'SofortLib')) ? $this->SofortLib_TransactionData->setLogEnabled() : '';
+		(is_a($this->SofortLibMultipay, 'SofortLib')) ? $this->SofortLibMultipay->setLogEnabled() : '';
+		(is_a($this->SofortLibTransactionData, 'SofortLib')) ? $this->SofortLibTransactionData->setLogEnabled() : '';
 		(is_a($this->ConfirmSr, 'SofortLib')) ? $this->ConfirmSr->setLogEnabled() : '';
 		return true;
 	}
@@ -1655,8 +1664,8 @@ class PnagInvoice extends PnagAbstractDocument {
 	 * @return boolean
 	 */
 	public function disableLog() {
-		(is_a($this->SofortLib_Multipay, 'SofortLib')) ? $this->SofortLib_Multipay->setLogDisabled() : '';
-		(is_a($this->SofortLib_TransactionData, 'SofortLib')) ? $this->SofortLib_TransactionData->setLogDisabled() : '';
+		(is_a($this->SofortLibMultipay, 'SofortLib')) ? $this->SofortLibMultipay->setLogDisabled() : '';
+		(is_a($this->SofortLibTransactionData, 'SofortLib')) ? $this->SofortLibTransactionData->setLogDisabled() : '';
 		(is_a($this->ConfirmSr, 'SofortLib')) ? $this->ConfirmSr->setLogDisabled() : '';
 		return true;
 	}
@@ -1670,11 +1679,11 @@ class PnagInvoice extends PnagAbstractDocument {
 	 * @public
 	 */
 	public function log($message){
-		if (is_a($this->SofortLib_Multipay, 'SofortLib')) {
-			$this->SofortLib_Multipay->log($message);
+		if (is_a($this->SofortLibMultipay, 'SofortLib')) {
+			$this->SofortLibMultipay->log($message);
 			return true;
-		} elseif (is_a($this->SofortLib_TransactionData, 'SofortLib')) {
-			$this->SofortLib_TransactionData->log($message);
+		} elseif (is_a($this->SofortLibTransactionData, 'SofortLib')) {
+			$this->SofortLibTransactionData->log($message);
 			return true;
 		} elseif (is_a($this->ConfirmSr, 'SofortLib')) {
 			$this->ConfirmSr->log($message);
@@ -1693,11 +1702,11 @@ class PnagInvoice extends PnagAbstractDocument {
 	 * @public
 	 */
 	public function logError($message){
-		if (is_a($this->SofortLib_Multipay, 'SofortLib')) {
-			$this->SofortLib_Multipay->logError($message);
+		if (is_a($this->SofortLibMultipay, 'SofortLib')) {
+			$this->SofortLibMultipay->logError($message);
 			return true;
-		} elseif (is_a($this->SofortLib_TransactionData, 'SofortLib')) {
-			$this->SofortLib_TransactionData->logError($message);
+		} elseif (is_a($this->SofortLibTransactionData, 'SofortLib')) {
+			$this->SofortLibTransactionData->logError($message);
 			return true;
 		} elseif (is_a($this->ConfirmSr, 'SofortLib')) {
 			$this->ConfirmSr->logError($message);
@@ -1715,11 +1724,11 @@ class PnagInvoice extends PnagAbstractDocument {
 	 * @public
 	 */
 	public function logWarning($message){
-		if (is_a($this->SofortLib_Multipay, 'SofortLib')) {
-			$this->SofortLib_Multipay->logWarning($message);
+		if (is_a($this->SofortLibMultipay, 'SofortLib')) {
+			$this->SofortLibMultipay->logWarning($message);
 			return true;
-		} elseif (is_a($this->SofortLib_TransactionData, 'SofortLib')) {
-			$this->SofortLib_TransactionData->logWarning($message);
+		} elseif (is_a($this->SofortLibTransactionData, 'SofortLib')) {
+			$this->SofortLibTransactionData->logWarning($message);
 			return true;
 		} elseif (is_a($this->ConfirmSr, 'SofortLib')) {
 			$this->ConfirmSr->logWarning($message);

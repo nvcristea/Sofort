@@ -1,5 +1,8 @@
 <?php
-require_once dirname(__FILE__) . '/sofortLib_abstract.inc.php';
+
+namespace Sofort;
+
+use Sofort\SofortLibAbstract;
 
 /**
  * This class encapsulates retrieval of listed banks of the Netherlands
@@ -10,11 +13,11 @@ require_once dirname(__FILE__) . '/sofortLib_abstract.inc.php';
  * [http://www.gnu.org/licenses/gpl-2.0.html]
  *
  * $Date: 2013-02-27 11:37:15 +0100 (Wed, 27 Feb 2013) $
- * @version SofortLib 1.5.4  $Id: sofortLib_ideal_banks.inc.php 6029 2013-02-27 10:37:15Z rotsch $
+ * @version SofortLib 1.5.4  $Id: SofortLibiDealBanks.php 6029 2013-02-27 10:37:15Z rotsch $
  * @author SOFORT AG http://www.sofort.com (integration@sofort.com)
  *
  */
-class SofortLib_iDeal_Banks extends SofortLib_Abstract {
+class SofortLibiDealBanks extends SofortLibAbstract {
 	
 	protected $_xmlRootTag = 'ideal';
 	
@@ -27,7 +30,7 @@ class SofortLib_iDeal_Banks extends SofortLib_Abstract {
 	
 	/**
 	 * 
-	 * Constructor for SofortLib_iDeal_Banks
+	 * Constructor for SofortLibiDealBanks
 	 * @param string $configKey
 	 * @param strign $apiUrl
 	 */
@@ -49,7 +52,7 @@ class SofortLib_iDeal_Banks extends SofortLib_Abstract {
 	/**
 	 * Parse the xml (override)
 	 * (non-PHPdoc)
-	 * @see SofortLib_Abstract::_parseXml()
+	 * @see SofortLibAbstract::_parseXml()
 	 */
 	protected function _parseXml() {
 		if (isset($this->_response['ideal']['banks']['bank'][0]['code']['@data'])) {

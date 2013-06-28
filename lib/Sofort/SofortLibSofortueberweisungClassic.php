@@ -1,13 +1,17 @@
 <?php
-require_once 'sofortLib_classic_notification.inc.php';
+
+namespace Sofort;
+
+use Sofort\SofortLibClassicNotification;
+
 /**
  * Setup a sofortueberweisung.de session using the classic api
  * after the configuration of the configuration you will receive
  * an url and a transaction id, your customer should be redirected to this url
  *
  *
- * Called by the sofortLib.php/sofortLib_ideal_classic.php etc.
- * $sofort->new SofortLib_SofortueberweisungClassic( $userid, $projectid, $password [, $hashfunction='sha1'] );
+ * Called by the SofortLib.php/SofortLibiDealClassic.php etc.
+ * $sofort->new SofortLibSofortueberweisungClassic( $userid, $projectid, $password [, $hashfunction='sha1'] );
  * $sofort->set...(); //set params for Hashcalculation
  * $sofort->set...(); //set more params for Hashcalculation
  * $sofort->getPaymentUrl();
@@ -20,11 +24,11 @@ require_once 'sofortLib_classic_notification.inc.php';
  * [http://www.gnu.org/licenses/gpl-2.0.html]
  *
  * $Date: 2012-11-23 17:15:47 +0100 (Fri, 23 Nov 2012) $
- * @version SofortLib 1.5.4  $Id: sofortLib_sofortueberweisung_classic.php 5773 2012-11-23 16:15:47Z dehn $
+ * @version SofortLib 1.5.4  $Id: SofortLibSofortueberweisungClassic.php 5773 2012-11-23 16:15:47Z dehn $
  * @author SOFORT AG http://www.sofort.com (integration@sofort.com)
  *
  */
-class SofortLib_SofortueberweisungClassic {
+class SofortLibSofortueberweisungClassic {
 	
 	public $params = array();
 	
@@ -58,7 +62,7 @@ class SofortLib_SofortueberweisungClassic {
 	
 	/**
 	 * 
-	 * Constructor for SofortLib_SofortueberweisungClassic
+	 * Constructor for SofortLibSofortueberweisungClassic
 	 * @param int $userId
 	 * @param int $projectId
 	 * @param string $password
@@ -148,7 +152,7 @@ class SofortLib_SofortueberweisungClassic {
 	 * displayed
 	 *
 	 * @param string $arg the url after a successful transaction
-	 * @return SofortLib_Multipay
+	 * @return SofortLibMultipay
 	 */
 	public function setSuccessUrl($arg) {
 		$this->params['user_variable_3'] = $arg;
@@ -162,7 +166,7 @@ class SofortLib_SofortueberweisungClassic {
 	 * his cart or to the payment selection page
 	 *
 	 * @param string $arg url for aborting the transaction
-	 * @return SofortLib_Multipay
+	 * @return SofortLibMultipay
 	 */
 	public function setAbortUrl($arg) {
 		$this->params['user_variable_4'] = $arg;
@@ -172,11 +176,11 @@ class SofortLib_SofortueberweisungClassic {
 	
 	/**
 	 * set the url where you want notification about status changes
-	 * being sent to. Use SofortLib_Notification and SofortLib_TransactionData
+	 * being sent to. Use SofortLibNotification and SofortLibTransactionData
 	 * to further process that notification
 	 *
 	 * @param string $arg url
-	 * @return SofortLib_Multipay
+	 * @return SofortLibMultipay
 	 */
 	public function setNotificationUrl($arg) {
 		$this->params['user_variable_5'] = $arg;
